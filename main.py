@@ -10,17 +10,21 @@ import time
 
 # Init and define screen
 pygame.init()
-width = 640
-height = 400
-screen = pygame.display.set_mode((width, height))
+screen_width = 800
+screen_height = 800
+screen = pygame.display.set_mode((screen_width, screen_height))
 bg = pygame.image.load("./resources/sprites/black.jpg")
-bg = pygame.transform.scale(bg, (width, height)) 
+bg = pygame.transform.scale(bg, (screen_width, screen_height)) 
 
 # Init clock
 clock = pygame.time.Clock()
 
 # Instantiate player
-player = Player("./resources/sprites/player.png", 45, 30)
+player_width = 45
+player_height = 30
+max_shooting_time = 0.5
+shoot_init = time.time()
+player = Player("./resources/sprites/player.png", player_width, player_height, screen_width, screen_height)
 
 # Create sprite groups
 enemies = pygame.sprite.Group()
@@ -29,11 +33,17 @@ all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 
 # Instantiate enemy spawner
-spawner = EnemySpawner(width, height, player, enemies)
+spawner = EnemySpawner(screen_width, screen_height, player, enemies)
 
 # Game loop
+player_hp = 10
+
 init = time.time()
-max_spawn_time = 1
+max_spawn_time = 3
+
+init_damage = time.time()
+max_damaging_time = 1
+
 running = True
 while running:
     # Check for events                
@@ -46,19 +56,24 @@ while running:
             if event.key == K_d:
                 player.rotate(-10)
             if event.key == K_SPACE:
-                bullet = player.shoot(player.rect[0], player.rect[1])
-                bullets.add(bullet)
-    
+                # Shoot maximum every 0.5s
+                current_shoot = time.time()
+                if current_shoot - shoot_init > max_shooting_time:
+                    bullet = player.shoot(player.rect[0], player.rect[1])
+                    bullets.add(bullet)
+                    shoot_init = current_shoot
+                    current_shoot = 0
+
         elif event.type == QUIT:
             running = False
 
     # Continuosly handle enemy spawners
-    current = time.time()
-    if current - init > max_spawn_time:
+    current_spawn = time.time()
+    if current_spawn - init > max_spawn_time:
         enemy = spawner.spawn_enemy()
         enemies.add(enemy)
-        init = current
-        current = 0
+        init = current_spawn
+        current_spawn = 0
 
     # Clear canvas once every frame before blitting everything
     clear = False
@@ -67,9 +82,20 @@ while running:
         clear = True
 
     # Step all enemies towards player and blit them
+    count_damaging_enemies = 0
     for enemy in enemies:
-        enemy.step_towards_player()
+        damaging = enemy.step_towards_player()
         screen.blit(enemy.surf,  enemy.rect)
+        if damaging:
+            count_damaging_enemies += 1
+
+    current_damage = time.time()
+    if current_damage - init_damage > max_damaging_time:
+        player_hp -= count_damaging_enemies
+        if player_hp <= 0:
+            print("you lost")
+        init_damage = current_damage
+        current_damage = 0
     
     # Step all bullets forward
     for bullet in bullets:

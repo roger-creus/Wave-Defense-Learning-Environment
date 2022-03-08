@@ -12,6 +12,8 @@ class NormalEnemy(pygame.sprite.Sprite):
         self.damage_distance = damage_distance
 
     def step_towards_player(self):
+        damaging = False
+        
         if np.sqrt((self.rect[0] - self.player.rect[0])**2 + (self.rect[1] - self.player.rect[1])**2) > self.damage_distance:
             deltaX = self.player.rect[0] - self.rect[0]
             deltaY = self.player.rect[1] - self.rect[1]
@@ -22,3 +24,7 @@ class NormalEnemy(pygame.sprite.Sprite):
             pos_y = self.rect[1] + np.sin(angle) * self.mov_speed 
 
             self.rect = (pos_x, pos_y, 25, 25)
+        else:
+            damaging = True
+
+        return damaging
