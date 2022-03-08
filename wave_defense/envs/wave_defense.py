@@ -11,13 +11,14 @@ from IPython import embed
 
 class WaveDefense(gym.Env):
     def __init__(self):
+            self.screen_width = 256
+            self.screen_height = 256
+
             # Define Observation and Action spaces for RL
             self.action_space = gym.spaces.Discrete(4)
-            self.observation_space = gym.spaces.Box(800,800,3)
+            self.observation_space = gym.spaces.Box(low=0, high=255, shape=(self.screen_height, self.screen_width, 3), dtype=np.uint8)
             
             # Define screen settings
-            self.screen_width = 800
-            self.screen_height = 800
             self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
             self.bg = pygame.image.load("./wave_defense/envs/resources/sprites/black.jpg")
             self.bg = pygame.transform.scale(self.bg, (self.screen_width, self.screen_height)) 
@@ -79,12 +80,9 @@ class WaveDefense(gym.Env):
             else:
                 # -5 reward if trying to shoot when "reloading"
                 reward -= 5
-        elif action == 3:
-            # NO-OP
-
 
         # Clear canvas once every frame before blitting everything
-        screen.blit(bg,(0,0))
+        self.screen.blit(self.bg,(0,0))
         clear = True
 
         # Step all enemies towards player and blit them
@@ -96,7 +94,7 @@ class WaveDefense(gym.Env):
                 count_damaging_enemies += 1
 
         # -5 reward for each damaging enemy in current frame
-        reward -= count_damaging_enemies * 5
+        reward -= count_damaging_enemies
 
         # Step all bullets forward
         for bullet in self.bullets:
@@ -121,12 +119,14 @@ class WaveDefense(gym.Env):
         if current_damage - self.init_damage > self.max_damaging_time:
             self.player_hp -= count_damaging_enemies
             if self.player_hp <= 0:
-                return next_state, -count_damaging_enemies * 5, True, {} 
+                return next_state, -count_damaging_enemies, True, {} 
             self.init_damage = current_damage
             current_damage = 0
 
         next_state = pygame.surfarray.array3d(self.screen)
         next_state = next_state.swapaxes(0,1)
+        
+        self.clock.tick(60)
 
         return next_state, reward, False, {}
 
