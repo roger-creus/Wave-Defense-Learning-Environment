@@ -1,19 +1,20 @@
-import prefabs
-from prefabs.normal_enemy import NormalEnemy
-from prefabs.player import Player
-from prefabs.enemy_spawner import EnemySpawner
+import envs.prefabs
+from envs.prefabs.normal_enemy import NormalEnemy
+from envs.prefabs.player import Player
+from envs.prefabs.enemy_spawner import EnemySpawner
 
 import pygame
 from pygame.locals import *
 import numpy as np
 import time
+from IPython import embed
 
 # Init and define screen
 pygame.init()
 screen_width = 800
 screen_height = 800
 screen = pygame.display.set_mode((screen_width, screen_height))
-bg = pygame.image.load("./game/resources/sprites/black.jpg")
+bg = pygame.image.load("./wave_defense/envs/resources/sprites/black.jpg")
 bg = pygame.transform.scale(bg, (screen_width, screen_height)) 
 
 # Init clock
@@ -24,7 +25,7 @@ player_width = 45
 player_height = 30
 max_shooting_time = 0.5
 shoot_init = time.time()
-player = Player("./game/resources/sprites/player.png", player_width, player_height, screen_width, screen_height)
+player = Player("./wave_defense/envs/resources/sprites/player.png", player_width, player_height, screen_width, screen_height)
 
 # Create sprite groups
 enemies = pygame.sprite.Group()

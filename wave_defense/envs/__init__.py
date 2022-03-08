@@ -1,1 +1,1 @@
-from wave_defense.envs.wave_defense import WaveDefense
+from .wave_defense import WaveDefense
