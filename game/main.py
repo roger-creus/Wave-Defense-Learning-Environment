@@ -13,7 +13,7 @@ pygame.init()
 screen_width = 800
 screen_height = 800
 screen = pygame.display.set_mode((screen_width, screen_height))
-bg = pygame.image.load("./resources/sprites/black.jpg")
+bg = pygame.image.load("./game/resources/sprites/black.jpg")
 bg = pygame.transform.scale(bg, (screen_width, screen_height)) 
 
 # Init clock
@@ -24,7 +24,7 @@ player_width = 45
 player_height = 30
 max_shooting_time = 0.5
 shoot_init = time.time()
-player = Player("./resources/sprites/player.png", player_width, player_height, screen_width, screen_height)
+player = Player("./game/resources/sprites/player.png", player_width, player_height, screen_width, screen_height)
 
 # Create sprite groups
 enemies = pygame.sprite.Group()
