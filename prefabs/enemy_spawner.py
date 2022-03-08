@@ -27,6 +27,5 @@ class EnemySpawner():
                 pos_y = random.randint(-100, -10)
                 pos_x = random.randint(0, self.width)
 
-        normal_enemy = NormalEnemy(self.player)
-        normal_enemy.rect = (pos_x, pos_y)
+        normal_enemy = NormalEnemy(self.player, pos_x, pos_y)
         return normal_enemy

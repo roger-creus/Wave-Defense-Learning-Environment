@@ -74,6 +74,10 @@ while running:
     # Step all bullets forward
     for bullet in bullets:
         bullet.step_forward()
+        for enemy in enemies:
+            if bullet.check_collision(enemy):
+                bullets.remove(bullet)
+                enemies.remove(enemy)
         screen.blit(bullet.surf,  bullet.rect)
         
     # Plot player and update display

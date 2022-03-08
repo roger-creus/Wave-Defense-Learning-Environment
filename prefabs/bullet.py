@@ -2,13 +2,20 @@ import pygame
 import numpy as np
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, angle, x, y, mov_speed = 10):
+    def __init__(self, angle, x, y, mov_speed = 5):
         super().__init__()
-        self.surf = pygame.Surface((5, 10))
+        self.surf = pygame.Surface((10, 10))
         self.surf.fill((255, 0, 0))
-        self.rect = (320,200)
+        self.rect = self.surf.get_rect(center=(320,200))
         self.angle = angle
         self.mov_speed = mov_speed
 
+
     def step_forward(self):
-        self.rect = (self.rect[0] + np.cos(self.angle), self.rect[1] + np.sin(self.angle))
+        self.rect.x += np.cos(np.deg2rad(self.angle)) * self.mov_speed
+        self.rect.y -= np.sin(np.deg2rad(self.angle)) * self.mov_speed
+
+    def check_collision(self, another):
+        if np.sqrt( (self.rect[0] - another.rect[0])**2 + (self.rect[1] - another.rect[1])**2 ) <= 20:
+            return 1
+        return 0
