@@ -1,0 +1,12 @@
+
+Episode 25	Steps: 16.97k	Eval reward: 789	Running reward: 523.13
+Episode 50	Steps: 35.09k	Eval reward: 687	Running reward: 747.13
+Episode 75	Steps: 52.10k	Eval reward: 1137	Running reward: 747.48
+Episode 100	Steps: 69.99k	Eval reward: 753	Running reward: 798.18
+Episode 125	Steps: 87.57k	Eval reward: 996	Running reward: 793.40
+Episode 150	Steps: 105.21k	Eval reward: 709	Running reward: 796.08
+Episode 175	Steps: 122.73k	Eval reward: 1286	Running reward: 806.90
+Episode 200	Steps: 139.45k	Eval reward: 784	Running reward: 762.57
+Episode 225	Steps: 156.40k	Eval reward: 534	Running reward: 744.83
+Episode 250	Steps: 174.56k	Eval reward: 1822	Running reward: 795.54
+Episode 275	Steps: 192.12k	Eval reward: 1326	Running reward: 797.29

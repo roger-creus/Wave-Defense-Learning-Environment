@@ -1,0 +1,24 @@
+{
+    "os": "Windows-10-10.0.19041-SP0",
+    "python": "3.7.11",
+    "heartbeatAt": "2022-03-08T20:28:29.384280",
+    "startedAt": "2022-03-08T20:28:27.201598",
+    "docker": null,
+    "gpu": "NVIDIA GeForce GTX 1050 Ti",
+    "gpu_count": 1,
+    "cpu_count": 12,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": ".\\wave_defense\\dqn.py",
+    "codePath": "wave_defense\\dqn.py",
+    "git": {
+        "remote": "https://github.com/yuyecreus/Wave-Defense-Learning-Environment.git",
+        "commit": "f4502f6581e2f13ce0f03ab625930dbf7b302d88"
+    },
+    "email": "creus99@gmail.com",
+    "root": "C:/Users/PC/Desktop/Wave-Defense-Learning-Environment",
+    "host": "DESKTOP-LNAR4EO",
+    "username": "PC",
+    "executable": "C:\\Users\\PC\\anaconda3\\envs\\ballsort3.7\\python.exe"
+}

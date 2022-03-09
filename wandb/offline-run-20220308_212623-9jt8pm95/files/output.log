@@ -1,0 +1,106 @@
+Python 3.7.11 (default, Jul 27 2021, 09:42:29) [MSC v.1916 64 bit (AMD64)]
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.31.0 -- An enhanced Interactive Python. Type '?' for help.
+tensor([[[[1., 1., 1.],
+          [1., 1., 1.],
+          [0., 0., 0.],
+          ...,
+          [0., 0., 0.],
+          [0., 0., 0.],
+          [0., 0., 0.]],
+         [[1., 1., 1.],
+          [1., 1., 1.],
+          [0., 0., 0.],
+          ...,
+          [0., 0., 0.],
+          [0., 0., 0.],
+          [0., 0., 0.]],
+         [[1., 1., 1.],
+          [1., 1., 1.],
+          [0., 0., 0.],
+          ...,
+          [0., 0., 0.],
+          [0., 0., 0.],
+          [0., 0., 0.]],
+         ...,
+         [[1., 1., 1.],
+          [1., 1., 1.],
+          [0., 0., 0.],
+          ...,
+          [1., 1., 1.],
+          [1., 1., 1.],
+          [0., 0., 0.]],
+         [[1., 1., 1.],
+          [1., 1., 1.],
+          [0., 0., 0.],
+          ...,
+          [1., 1., 1.],
+          [1., 1., 1.],
+          [0., 0., 0.]],
+         [[0., 0., 0.],
+          [0., 0., 0.],
+          [0., 0., 0.],
+          ...,
+          [0., 0., 0.],
+          [0., 0., 0.],
+          [1., 1., 1.]]]])
+torch.Size([1, 256, 256, 3])
+torch.Size([1, 3, 256, 256])
+torch.Size([3, 256, 256])
+torch.Size([1, 1, 84, 84])
+<matplotlib.image.AxesImage at 0x257084e6f88>
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+.\wave_defense\dqn.py in <module>
+----> 1 x = F.relu(self.bn1(self.conv1(x)))
+NameError: name 'self' is not defined
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+.\wave_defense\dqn.py in <module>
+----> 1 x = F.relu(DQN.bn1(DQN.conv1(x)))
+AttributeError: type object 'DQN' has no attribute 'bn1'
+---------------------------------------------------------------------------
+RuntimeError                              Traceback (most recent call last)
+.\wave_defense\dqn.py in <module>
+    233         # Select an action
+    234         eps_greedy_threshold = compute_eps_threshold(step_count, hparams['eps_start'], hparams['eps_end'], hparams['eps_decay'])
+--> 235         action = select_action(policy_net, state, eps_greedy_threshold, n_actions)
+    236
+    237         # Perform action in env
+.\wave_defense\dqn.py in select_action(policy, state, eps_greedy_threshold, n_actions)
+    106             # second column on max result is index of where max element was
+    107             # found, so we pick action with the larger expected reward.
+--> 108             action = policy(state).max(1)[1].view(1,1)
+    109
+    110     else:
+~\anaconda3\envs\ballsort3.7\lib\site-packages\torch\nn\modules\module.py in _call_impl(self, *input, **kwargs)
+   1100         if not (self._backward_hooks or self._forward_hooks or self._forward_pre_hooks or _global_backward_hooks
+   1101                 or _global_forward_hooks or _global_forward_pre_hooks):
+-> 1102             return forward_call(*input, **kwargs)
+   1103         # Do not call functions when jit is used
+   1104         full_backward_hooks, non_full_backward_hooks = [], []
+.\wave_defense\dqn.py in forward(self, x)
+     91         x = torch.flatten(x, start_dim = 1)
+     92
+---> 93         x = self.affine1(x)
+     94         return x
+     95
+~\anaconda3\envs\ballsort3.7\lib\site-packages\torch\nn\modules\module.py in _call_impl(self, *input, **kwargs)
+   1100         if not (self._backward_hooks or self._forward_hooks or self._forward_pre_hooks or _global_backward_hooks
+   1101                 or _global_forward_hooks or _global_forward_pre_hooks):
+-> 1102             return forward_call(*input, **kwargs)
+   1103         # Do not call functions when jit is used
+   1104         full_backward_hooks, non_full_backward_hooks = [], []
+~\anaconda3\envs\ballsort3.7\lib\site-packages\torch\nn\modules\linear.py in forward(self, input)
+    101
+    102     def forward(self, input: Tensor) -> Tensor:
+--> 103         return F.linear(input, self.weight, self.bias)
+    104
+    105     def extra_repr(self) -> str:
+~\anaconda3\envs\ballsort3.7\lib\site-packages\torch\nn\functional.py in linear(input, weight, bias)
+   1846     if has_torch_function_variadic(input, weight, bias):
+   1847         return handle_torch_function(linear, (input, weight, bias), input, weight, bias=bias)
+-> 1848     return torch._C._nn.linear(input, weight, bias)
+   1849
+   1850
+RuntimeError: mat1 and mat2 shapes cannot be multiplied (1x1568 and 26912x4)

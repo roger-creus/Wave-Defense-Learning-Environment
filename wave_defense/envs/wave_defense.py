@@ -24,8 +24,8 @@ class WaveDefense(gym.Env):
             self.bg = pygame.transform.scale(self.bg, (self.screen_width, self.screen_height)) 
 
             # Instantiate player and customize it
-            self.player_width = 45
-            self.player_height = 30
+            self.player_width = 30
+            self.player_height = 20
             self.max_shooting_time = 0.5
             self.shoot_init = time.time()
             self.player = Player("./wave_defense/envs/resources/sprites/player.png", self.player_width, self.player_height, self.screen_width, self.screen_height)
@@ -77,9 +77,9 @@ class WaveDefense(gym.Env):
                 self.bullets.add(bullet)
                 self.shoot_init = current_shoot
                 current_shoot = 0
-            else:
+            #else:
                 # -5 reward if trying to shoot when "reloading"
-                reward -= 5
+                #reward -= 5
 
         # Clear canvas once every frame before blitting everything
         self.screen.blit(self.bg,(0,0))

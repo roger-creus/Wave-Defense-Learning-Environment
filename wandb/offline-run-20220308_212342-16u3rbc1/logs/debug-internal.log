@@ -1,0 +1,19 @@
+2022-03-08 21:23:43,602 INFO    MainThread:16812 [internal.py:wandb_internal():90] W&B internal server running at pid: 16812, started at: 2022-03-08 21:23:43.602014
+2022-03-08 21:23:43,603 INFO    WriterThread:16812 [datastore.py:open_for_write():77] open: C:\Users\PC\Desktop\Wave-Defense-Learning-Environment\wandb\offline-run-20220308_212342-16u3rbc1\run-16u3rbc1.wandb
+2022-03-08 21:23:43,603 DEBUG   HandlerThread:16812 [handler.py:handle_request():130] handle_request: run_start
+2022-03-08 21:23:44,713 DEBUG   HandlerThread:16812 [meta.py:__init__():40] meta init
+2022-03-08 21:23:44,713 DEBUG   HandlerThread:16812 [meta.py:__init__():54] meta init done
+2022-03-08 21:23:44,713 DEBUG   HandlerThread:16812 [meta.py:probe():214] probe
+2022-03-08 21:23:44,743 DEBUG   HandlerThread:16812 [meta.py:_setup_git():204] setup git
+2022-03-08 21:23:44,806 DEBUG   HandlerThread:16812 [meta.py:_setup_git():211] setup git done
+2022-03-08 21:23:44,806 DEBUG   HandlerThread:16812 [meta.py:_save_pip():58] save pip
+2022-03-08 21:23:44,806 DEBUG   HandlerThread:16812 [meta.py:_save_pip():72] save pip done
+2022-03-08 21:23:44,806 DEBUG   HandlerThread:16812 [meta.py:_save_conda():79] save conda
+2022-03-08 21:23:46,919 DEBUG   HandlerThread:16812 [meta.py:_save_conda():89] save conda done
+2022-03-08 21:23:46,920 DEBUG   HandlerThread:16812 [meta.py:probe():252] probe done
+2022-03-08 21:23:52,679 WARNING MainThread:16812 [internal.py:is_dead():367] Internal process exiting, parent pid 15104 disappeared
+2022-03-08 21:23:52,679 ERROR   MainThread:16812 [internal.py:wandb_internal():142] Internal process shutdown.
+2022-03-08 21:23:52,986 INFO    WriterThread:16812 [datastore.py:close():281] close: C:\Users\PC\Desktop\Wave-Defense-Learning-Environment\wandb\offline-run-20220308_212342-16u3rbc1\run-16u3rbc1.wandb
+2022-03-08 21:23:52,987 INFO    HandlerThread:16812 [handler.py:finish():731] shutting down handler
+2022-03-08 21:23:53,685 INFO    SenderThread:16812 [sender.py:finish():1070] shutting down sender
+2022-03-08 21:23:53,685 INFO    MainThread:16812 [internal.py:handle_exit():77] Internal process exited

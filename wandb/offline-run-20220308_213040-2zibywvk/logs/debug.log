@@ -1,0 +1,20 @@
+2022-03-08 21:30:40,660 INFO    MainThread:10836 [wandb_setup.py:_flush():71] setting env: {}
+2022-03-08 21:30:40,660 INFO    MainThread:10836 [wandb_init.py:_log_setup():371] Logging user logs to C:\Users\PC\Desktop\Wave-Defense-Learning-Environment\wandb\offline-run-20220308_213040-2zibywvk\logs\debug.log
+2022-03-08 21:30:40,661 INFO    MainThread:10836 [wandb_init.py:_log_setup():372] Logging internal logs to C:\Users\PC\Desktop\Wave-Defense-Learning-Environment\wandb\offline-run-20220308_213040-2zibywvk\logs\debug-internal.log
+2022-03-08 21:30:40,661 INFO    MainThread:10836 [wandb_init.py:init():404] calling init triggers
+2022-03-08 21:30:40,661 INFO    MainThread:10836 [wandb_init.py:init():411] wandb.init called with sweep_config: {}
+config: {'gamma': 0.99, 'log_interval': 25, 'episodes': 1000000, 'num_steps': 1000, 'batch_size': 128, 'lr': 0.001, 'eps_start': 1.0, 'eps_end': 0.1, 'eps_decay': 50000, 'target_update': 5000, 'replay_size': 2000}
+2022-03-08 21:30:40,661 INFO    MainThread:10836 [wandb_init.py:init():460] starting backend
+2022-03-08 21:30:40,661 INFO    MainThread:10836 [backend.py:_multiprocessing_setup():101] multiprocessing start_methods=spawn, using: spawn
+2022-03-08 21:30:40,664 INFO    MainThread:10836 [backend.py:ensure_launched():216] starting backend process...
+2022-03-08 21:30:40,724 INFO    MainThread:10836 [backend.py:ensure_launched():222] started backend process with pid: 12280
+2022-03-08 21:30:40,724 INFO    MainThread:10836 [wandb_init.py:init():469] backend started and connected
+2022-03-08 21:30:40,725 INFO    MainThread:10836 [wandb_init.py:init():533] updated telemetry
+2022-03-08 21:30:40,836 INFO    MainThread:10836 [wandb_init.py:init():606] starting run threads in backend
+2022-03-08 21:30:45,288 INFO    MainThread:10836 [wandb_run.py:_console_start():1810] atexit reg
+2022-03-08 21:30:45,288 INFO    MainThread:10836 [wandb_run.py:_redirect():1684] redirect: SettingsConsole.WRAP
+2022-03-08 21:30:45,289 INFO    MainThread:10836 [wandb_run.py:_redirect():1721] Wrapping output streams.
+2022-03-08 21:30:45,289 INFO    MainThread:10836 [wandb_run.py:_redirect():1745] Redirects installed.
+2022-03-08 21:30:45,289 INFO    MainThread:10836 [wandb_init.py:init():633] run started, returning control to user process
+2022-03-08 21:30:56,590 INFO    MainThread:10836 [wandb_run.py:_atexit_cleanup():1780] got exitcode: 255
+2022-03-08 21:30:56,591 INFO    MainThread:10836 [wandb_run.py:_restore():1752] restore
