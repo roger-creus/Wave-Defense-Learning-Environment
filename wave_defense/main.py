@@ -11,8 +11,8 @@ from IPython import embed
 
 # Init and define screen
 pygame.init()
-screen_width = 128
-screen_height = 128
+screen_width = 800
+screen_height = 800
 screen = pygame.display.set_mode((screen_width, screen_height))
 bg = pygame.image.load("./wave_defense/envs/resources/sprites/black.jpg")
 bg = pygame.transform.scale(bg, (screen_width, screen_height)) 
@@ -21,8 +21,8 @@ bg = pygame.transform.scale(bg, (screen_width, screen_height))
 clock = pygame.time.Clock()
 
 # Instantiate player
-player_width = 15
-player_height = 10
+player_width = 45
+player_height = 30
 max_shooting_time = 0.5
 shoot_init = time.time()
 player = Player("./wave_defense/envs/resources/sprites/player.png", player_width, player_height, screen_width, screen_height)
@@ -44,6 +44,9 @@ max_spawn_time = 3
 
 init_damage = time.time()
 max_damaging_time = 1
+
+max_enemies = 10
+current_enemies = 0
 
 running = True
 while running:
@@ -71,10 +74,12 @@ while running:
     # Continuosly handle enemy spawners
     current_spawn = time.time()
     if current_spawn - init > max_spawn_time:
-        enemy = spawner.spawn_enemy()
-        enemies.add(enemy)
-        init = current_spawn
-        current_spawn = 0
+        if current_enemies + 1 <= max_enemies:
+            enemy = spawner.spawn_enemy()
+            enemies.add(enemy)
+            init = current_spawn
+            current_spawn = 0
+            current_enemies += 1
 
     # Clear canvas once every frame before blitting everything
     clear = False
@@ -101,10 +106,15 @@ while running:
     # Step all bullets forward
     for bullet in bullets:
         bullet.step_forward()
+        if bullet.rect.x >= screen_width or bullet.rect.x < 0 or bullet.rect.y < 0 or bullet.rect.y > screen_height:
+            bullets.remove(bullet)
+            print("destroyed")
         for enemy in enemies:
             if bullet.check_collision(enemy):
                 bullets.remove(bullet)
                 enemies.remove(enemy)
+                current_enemies -= 1
+
         screen.blit(bullet.surf,  bullet.rect)
         
     # Plot player and update display

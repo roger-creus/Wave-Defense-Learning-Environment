@@ -4,7 +4,7 @@ import numpy as np
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, angle, x, y, screen_width, screen_height, mov_speed = 2.5):
         super().__init__()
-        self.surf = pygame.Surface((4, 4))
+        self.surf = pygame.Surface((8, 8))
         self.surf.fill((255, 0, 0))
         self.rect = self.surf.get_rect(center=(screen_width/2,screen_height/2))
         self.angle = angle
@@ -16,6 +16,6 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.y -= np.sin(np.deg2rad(self.angle)) * self.mov_speed
 
     def check_collision(self, another):
-        if np.sqrt( (self.rect[0] - another.rect[0])**2 + (self.rect[1] - another.rect[1])**2 ) <= 8:
+        if np.sqrt( (self.rect[0] - another.rect[0])**2 + (self.rect[1] - another.rect[1])**2 ) <= 15:
             return 1
         return 0

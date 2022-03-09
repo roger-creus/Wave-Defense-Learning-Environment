@@ -2,3 +2,5 @@
 ./wave_defense/__pycache__/*
 ./wave_defense/wave_defense.egg-info/*
 ./wandb/*
+./checkpoints/*
+./models/*

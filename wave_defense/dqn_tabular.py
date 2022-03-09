@@ -1,6 +1,6 @@
 import gym
 import numpy as np
-from envs.wave_defense import WaveDefense
+from envs.wave_defense import WaveDefense, WaveDefenseTabular
 from collections import namedtuple
 import torch
 import torch.nn as nn
@@ -14,41 +14,13 @@ import os
 import matplotlib.pyplot as plt
 from IPython import embed
 
+
 os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 Transition = namedtuple(
     'Transition', ('state', 'action', 'next_state', 'reward'))
 
-
-def preprocess_images(x):
-    #x = x.permute(0,1,4,2,3)
-    x = x.permute(0,3,1,2)
-    
-    x = x.squeeze(0)
-
-    transform = transforms.Compose([
-        transforms.Grayscale(),
-        transforms.Resize((110,84)),
-        transforms.CenterCrop((84,84)),
-    ])
-    
-    x = transform(x).squeeze(1).unsqueeze(0)
-    #x = (x>0.5).float()
-    
-    embed()
-    plt.imshow(x[0,0,:,:].squeeze(0).cpu().numpy())
-    plt.show()
-    #plt.show()
-    #plt.imshow(x[0,1,:,:].squeeze(0).cpu().numpy())
-    #plt.show()
-    #plt.imshow(x[0,2,:,:].squeeze(0).cpu().numpy())
-    #plt.show()
-    #plt.imshow(x[0,3,:,:].squeeze(0).cpu().numpy())
-    #plt.show()
-    #print("----")
-    
-    return x.permute(1,0,2,3)
 
 class ReplayMemory(object):
     def __init__(self, capacity):
@@ -73,25 +45,15 @@ class DQN(nn.Module):
     def __init__(self, inputs, outputs, hidden_size=128):
         super(DQN, self).__init__()
 
-        self.conv1 = nn.Conv2d(1, 16, kernel_size=5, stride=2)
-        self.bn1 = nn.BatchNorm2d(16)
-        self.conv2 = nn.Conv2d(16, 32, kernel_size=5, stride=2)
-        self.bn2 = nn.BatchNorm2d(32)
-        self.conv3 = nn.Conv2d(32, 32, kernel_size=5, stride=2)
-        self.bn3 = nn.BatchNorm2d(32)
-
-        self.affine1 = nn.Linear(1568, 4)
+        self.affine1 = nn.Linear(25, 64)
+        self.affine2 = nn.Linear(64, 64)
+        self.affine3 = nn.Linear(64, 4)
 
     def forward(self, x):
-        x = preprocess_images(x)
+        x = F.relu(self.affine1(x))
+        x = F.relu(self.affine2(x))
+        x = self.affine3(x)
 
-        x = F.relu(self.bn1(self.conv1(x)))
-        x = F.relu(self.bn2(self.conv2(x)))
-        x = F.relu(self.bn3(self.conv3(x)))
-
-        x = torch.flatten(x, start_dim = 1)
-
-        x = self.affine1(x)
         return x
 
 def compute_eps_threshold(step, eps_start, eps_end, eps_decay):
@@ -182,20 +144,20 @@ def test(env, policy, render=False):
 
 hparams = {
     'gamma' : 0.99,             # discount factor
-    'log_interval' : 25,        # controls how often we log progress, in episodes
+    'log_interval' : 100,        # controls how often we log progress, in episodes
     'episodes': 1000000,          # number of steps to train on
     'num_steps': 100000,
     'batch_size': 128,          # batch size for optimization
     'lr' : 1e-3,                # learning rate
     'eps_start': 1.0,           # initial value for epsilon (in epsilon-greedy)
     'eps_end': 0.1,             # final value for epsilon (in epsilon-greedy)
-    'eps_decay': 50000,         # length of epsilon decay, in env steps
-    'target_update': 5000,      # how often to update target net, in env steps
-    'replay_size': 2000,       # replay memory size
+    'eps_decay': 20000,         # length of epsilon decay, in env steps
+    'target_update': 20000,      # how often to update target net, in env steps
+    'replay_size': 50000,       # replay memory size
 }
 
 # Create environment
-env = WaveDefense()
+env = WaveDefenseTabular()
 
 # Get number of actions from gym action space
 n_inputs = env.observation_space.shape[0]
@@ -203,7 +165,7 @@ n_actions = env.action_space.n
 
 # Initialize wandb run
 wandb.finish() # execute to avoid overlapping runnings (advice: later remove duplicates in wandb)
-wandb.init(project="WaveDefense", config=hparams)
+wandb.init(project="WaveDefenseTabular", config=hparams)
 
 # Initialize policy and target networks
 policy_net = DQN(n_inputs, n_actions).to(device)
@@ -218,6 +180,7 @@ step_count = 0
 running_reward = 0
 
 episode = 0
+best_reward = 0
 
 ep_rew_history = []
 i_episode, ep_reward = 0, -float('inf')
@@ -229,7 +192,6 @@ while episode < hparams['episodes']:
     losses = []
     game_steps = 0
     while not done and game_steps <  hparams['num_steps']:
-        
         # Select an action
         eps_greedy_threshold = compute_eps_threshold(step_count, hparams['eps_start'], hparams['eps_end'], hparams['eps_decay'])
         action = select_action(policy_net, state, eps_greedy_threshold, n_actions)
@@ -269,6 +231,14 @@ while episode < hparams['episodes']:
     
     running_reward = 0.05 * reward_episode + (1 - 0.05) * running_reward
 
+    if reward_episode > best_reward:
+        if not os.path.exists('checkpoints'):
+            os.makedirs('checkpoints')
+        torch.save(policy_net.state_dict(), f'checkpoints/dqn.pt')
+        best_reward = reward_episode
+        print("Saved model with reward: " + str(reward_episode))
+                
+
     wandb.log(
         {
         'loss': np.mean(losses),
@@ -279,7 +249,7 @@ while episode < hparams['episodes']:
     
     # Evaluate greedy policy
     if i_episode % hparams['log_interval'] == 0:
-        test_env = WaveDefense()
+        test_env = WaveDefenseTabular()
         ep_reward = test(test_env, policy_net)
         ep_rew_history.append(ep_reward)
         print(f'Episode {i_episode}\tSteps: {step_count/1000:.2f}k\tEval reward: {ep_reward}\tRunning reward: {running_reward:.2f}')

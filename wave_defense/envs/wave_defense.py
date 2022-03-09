@@ -26,7 +26,7 @@ class WaveDefense(gym.Env):
             # Instantiate player and customize it
             self.player_width = 30
             self.player_height = 20
-            self.max_shooting_time = 0.5
+            self.max_shooting_time = 1
             self.shoot_init = time.time()
             self.player = Player("./wave_defense/envs/resources/sprites/player.png", self.player_width, self.player_height, self.screen_width, self.screen_height)
             self.rotation_angle = 10
@@ -40,6 +40,11 @@ class WaveDefense(gym.Env):
 
             # Instantiate enemy spawner
             self.spawner = EnemySpawner(self.screen_width, self.screen_height, self.player, self.enemies)
+            self.current_enemies = 0
+            self.max_enemies = 6
+
+            self.current_bullets = 0
+            self.max_bullets = 6
 
             # Game variables
             self.player_hp = 10
@@ -60,10 +65,12 @@ class WaveDefense(gym.Env):
         # Handle the spawners
         current_spawn = time.time()
         if current_spawn - self.init > self.max_spawn_time:
-            enemy = self.spawner.spawn_enemy()
-            self.enemies.add(enemy)
-            self.init = current_spawn
-            current_spawn = 0
+            if self.current_enemies + 1 <= self.max_enemies:
+                enemy = self.spawner.spawn_enemy()
+                self.enemies.add(enemy)
+                self.init = current_spawn
+                current_spawn = 0
+                self.current_enemies += 1
 
         if action == 0:
             self.player.rotate(self.rotation_angle)
@@ -72,9 +79,10 @@ class WaveDefense(gym.Env):
         elif action == 2:
             current_shoot = time.time()
             # Shoot maximum every 0.5s
-            if current_shoot - self.shoot_init > self.max_shooting_time:
+            if current_shoot - self.shoot_init > self.max_shooting_time and self.current_bullets + 1 <= self.max_bullets:
                 bullet = self.player.shoot(self.player.rect[0], self.player.rect[1])
                 self.bullets.add(bullet)
+                self.current_bullets += 1
                 self.shoot_init = current_shoot
                 current_shoot = 0
             #else:
@@ -99,12 +107,17 @@ class WaveDefense(gym.Env):
         # Step all bullets forward
         for bullet in self.bullets:
             bullet.step_forward()
+            if bullet.rect.x >= self.screen_width or bullet.rect.x < 0 or bullet.rect.y < 0 or bullet.rect.y > self.screen_height:
+                self.bullets.remove(bullet)
+                self.current_bullets -= 1
             for enemy in self.enemies:
                 if bullet.check_collision(enemy):
                     self.bullets.remove(bullet)
                     self.enemies.remove(enemy)
+                    self.current_enemies -= 1
+                    self.current_bullets -= 1
                     # Reward for killing an enemy
-                    reward += 10
+                    reward += 50
             
             self.screen.blit(bullet.surf,  bullet.rect)
         
@@ -134,6 +147,8 @@ class WaveDefense(gym.Env):
         # Empty all enemies and bullets in game
         self.enemies = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
+        self.current_enemies -= 1
+        self.current_bullets -= 1
         
         # Reset player health points and score
         self.player_hp = 10
@@ -164,5 +179,214 @@ class WaveDefense(gym.Env):
 
         for bullet in self.bullets:
            self.screen.blit(bullet.surf,  bullet.rect)
+
+        pygame.display.update()
+
+
+
+############ TABULAR VERSION OF THE ENVIRONMENT ###########
+
+class WaveDefenseTabular(gym.Env):
+    def __init__(self):
+            self.screen_width = 800
+            self.screen_height = 800
+
+            # Define Observation and Action spaces for RL
+            self.action_space = gym.spaces.Discrete(4)
+            self.observation_space = gym.spaces.Box(low=-1, high=1, shape=(25,), dtype=np.float)
+            
+            # Define screen settings
+            self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
+            self.bg = pygame.image.load("./wave_defense/envs/resources/sprites/black.jpg")
+            self.bg = pygame.transform.scale(self.bg, (self.screen_width, self.screen_height)) 
+
+            # Instantiate player and customize it
+            self.player_width = 45
+            self.player_height = 30
+            self.max_shooting_time = 1
+            self.shoot_init = time.time()
+            self.player = Player("./wave_defense/envs/resources/sprites/player.png", self.player_width, self.player_height, self.screen_width, self.screen_height)
+            self.rotation_angle = 10
+
+            # Init clock
+            self.clock = pygame.time.Clock()
+            
+            # Create sprite groups
+            self.enemies = pygame.sprite.Group()
+            self.bullets = pygame.sprite.Group()
+
+            # Instantiate enemy spawner
+            self.spawner = EnemySpawner(self.screen_width, self.screen_height, self.player, self.enemies)
+            self.current_enemies = 0
+            self.max_enemies = 6
+            
+            self.current_bullets = 0
+            self.max_bullets = 6
+
+            # Game variables
+            self.player_hp = 10
+
+            self.init = time.time()
+            self.max_spawn_time = 3
+
+            self.init_damage = time.time()
+            self.max_damaging_time = 1
+
+            self.score = 0
+
+
+    def get_current_game_state(self):
+        input_vec = [self.player.angle / 360]
+
+        # Add info of all enemies in game
+        enemies_to_pad = self.max_enemies - len(self.enemies) 
+        for enemy in self.enemies:
+            pos_x = enemy.rect[0] / self.screen_width
+            pos_y = enemy.rect[1] / self.screen_height
+            input_vec += [pos_x, pos_y]
+        
+        for i in range(enemies_to_pad):
+            input_vec += [-1, -1]
+
+        if enemies_to_pad + len(self.enemies) > self.max_enemies:
+            print("there are enemies in game: " + str(len(self.enemies)))
+            print("enemies to pad is: " + str(enemies_to_pad))
+            
+
+        # Add info of all bullets in game
+        bullets_to_pad = self.max_bullets - len(self.bullets) 
+        for bullet in self.bullets:
+            pos_x = bullet.rect[0] / self.screen_width
+            pos_y = bullet.rect[1]  / self.screen_height
+            input_vec += [pos_x, pos_y]
+
+        for i in range(bullets_to_pad):
+            input_vec += [-1, -1]
+
+        if bullets_to_pad + len(self.bullets) > self.max_bullets:
+            print("there are enemies in game: " + str(len(self.bullets)))
+            print("enemies to pad is: " + str(bullets_to_pad))
+
+        return np.array(input_vec)
+
+
+    def step(self, action):
+        reward = 1
+        done = False
+
+        # Handle the spawners
+        current_spawn = time.time()
+        if current_spawn - self.init > self.max_spawn_time:
+            if self.current_enemies + 1 <= self.max_enemies:
+                enemy = self.spawner.spawn_enemy()
+                self.enemies.add(enemy)
+                self.current_enemies += 1
+                self.init = current_spawn
+                current_spawn = 0
+        if action == 0:
+            self.player.rotate(self.rotation_angle)
+        elif action == 1:
+            self.player.rotate(-self.rotation_angle)
+        elif action == 2:
+            current_shoot = time.time()
+            # Shoot maximum every 0.5s
+            if current_shoot - self.shoot_init > self.max_shooting_time and self.current_bullets + 1 <= self.max_bullets:
+                bullet = self.player.shoot(self.player.rect[0], self.player.rect[1])
+                self.bullets.add(bullet)
+                self.current_bullets += 1
+                self.shoot_init = current_shoot
+                current_shoot = 0
+            #else:
+                # -5 reward if trying to shoot when "reloading"
+                #reward -= 5
+
+        # Clear canvas once every frame before blitting everything
+        self.screen.blit(self.bg,(0,0))
+        clear = True
+
+        # Step all enemies towards player and blit them
+        count_damaging_enemies = 0
+        for enemy in self.enemies:
+            damaging = enemy.step_towards_player()
+            self.screen.blit(enemy.surf,  enemy.rect)
+            if damaging:
+                count_damaging_enemies += 1
+
+        # -5 reward for each damaging enemy in current frame
+        reward -= count_damaging_enemies
+
+        # Step all bullets forward
+        for bullet in self.bullets:
+            bullet.step_forward()
+            if bullet.rect.x >= self.screen_width or bullet.rect.x < 0 or bullet.rect.y < 0 or bullet.rect.y > self.screen_height:
+                self.bullets.remove(bullet)
+                self.current_bullets -= 1
+            for enemy in self.enemies:
+                if bullet.check_collision(enemy):
+                    self.bullets.remove(bullet)
+                    self.enemies.remove(enemy)
+                    self.current_enemies -= 1
+                    self.current_bullets -= 1
+                    # Reward for killing an enemy
+                    reward += 10
+            
+            self.screen.blit(bullet.surf,  bullet.rect)
+        
+        self.screen.blit(self.player.surf, self.player.rect)
+
+        ### At this point all objects are drawn in the screen ###
+        next_state = self.get_current_game_state()
+
+        # Count the damage received in the current frame
+        current_damage = time.time()
+        if current_damage - self.init_damage > self.max_damaging_time:
+            self.player_hp -= count_damaging_enemies
+            if self.player_hp <= 0:
+                return next_state, -count_damaging_enemies, True, {} 
+            self.init_damage = current_damage
+            current_damage = 0
+        
+        self.clock.tick(60)
+
+        return next_state, reward, False, {}
+
+    def reset(self):
+        # Empty all enemies and bullets in game
+        self.enemies = pygame.sprite.Group()
+        self.bullets = pygame.sprite.Group()
+        self.current_bullets = 0
+        self.current_enemies = 0
+        
+        # Reset player health points and score
+        self.player_hp = 10
+        self.score = 0
+
+        # Reset spawn, damage and shooting timers
+        self.init = time.time()
+        self.init_damage = time.time()
+        self.shoot_init = time.time()
+
+        # Draw empty board with only the player
+        self.screen.blit(self.bg, (0,0))
+        self.screen.blit(self.player.surf, self.player.rect)
+        
+        # Transform surface to numpy image
+        state = self.get_current_game_state()
+
+        return state
+
+    def render(self):
+        self.screen.blit(self.bg,(0,0))
+        self.screen.blit(self.player.surf, self.player.rect)
+
+        # Blit all enemies
+        for enemy in self.enemies:
+            self.screen.blit(enemy.surf,  enemy.rect)
+
+        for bullet in self.bullets:
+           self.screen.blit(bullet.surf,  bullet.rect)
+
+        state = self.get_current_game_state()
+        
 
         pygame.display.update()
