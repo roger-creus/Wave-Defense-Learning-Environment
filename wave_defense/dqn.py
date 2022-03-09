@@ -36,7 +36,9 @@ def preprocess_images(x):
     x = transform(x).squeeze(1).unsqueeze(0)
     #x = (x>0.5).float()
     
-    #plt.imshow(x[0,0,:,:].squeeze(0).cpu().numpy())
+    embed()
+    plt.imshow(x[0,0,:,:].squeeze(0).cpu().numpy())
+    plt.show()
     #plt.show()
     #plt.imshow(x[0,1,:,:].squeeze(0).cpu().numpy())
     #plt.show()

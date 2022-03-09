@@ -1,7 +1,9 @@
 import gym
 from stable_baselines3 import PPO
 from stable_baselines3.common.env_util import make_vec_env
-from wave_defense import WaveDefense
+from envs.wave_defense import WaveDefense
+
+env = WaveDefense()
 
 model = PPO.load("ppo_wave_defense")
 

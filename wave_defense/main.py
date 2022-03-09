@@ -11,8 +11,8 @@ from IPython import embed
 
 # Init and define screen
 pygame.init()
-screen_width = 256
-screen_height = 256
+screen_width = 128
+screen_height = 128
 screen = pygame.display.set_mode((screen_width, screen_height))
 bg = pygame.image.load("./wave_defense/envs/resources/sprites/black.jpg")
 bg = pygame.transform.scale(bg, (screen_width, screen_height)) 
@@ -21,8 +21,8 @@ bg = pygame.transform.scale(bg, (screen_width, screen_height))
 clock = pygame.time.Clock()
 
 # Instantiate player
-player_width = 30
-player_height = 20
+player_width = 15
+player_height = 10
 max_shooting_time = 0.5
 shoot_init = time.time()
 player = Player("./wave_defense/envs/resources/sprites/player.png", player_width, player_height, screen_width, screen_height)

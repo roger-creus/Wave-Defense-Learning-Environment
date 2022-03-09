@@ -4,7 +4,7 @@ import numpy as np
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, angle, x, y, screen_width, screen_height, mov_speed = 2.5):
         super().__init__()
-        self.surf = pygame.Surface((5, 5))
+        self.surf = pygame.Surface((4, 4))
         self.surf.fill((255, 0, 0))
         self.rect = self.surf.get_rect(center=(screen_width/2,screen_height/2))
         self.angle = angle
