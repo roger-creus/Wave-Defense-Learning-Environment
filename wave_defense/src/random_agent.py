@@ -4,7 +4,7 @@ import gym
 
 # EXAMPLE RANDOM AGENT
 
-env = WaveDefense()
+env = gym.make("WaveDefense")
 env.reset()
 env.render()
 done = False
