@@ -10,11 +10,10 @@ model = PPO.load("./models/ppo_tabular_500M_4env.zip")
 obs = env.reset()
 reward = 0
 done = False
+i = 0
 while not done:
     action, _states = model.predict(obs)
     obs, rewards, done, info = env.step(action)
-    print(rewards)
     reward += rewards
     env.render()
-
-print(reward)
+print(i)

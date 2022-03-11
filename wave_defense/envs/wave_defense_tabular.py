@@ -45,7 +45,7 @@ class WaveDefenseTabular(gym.Env):
             self.max_enemies = 6
             
             self.current_bullets = 0
-            self.max_bullets = 6
+            self.max_bullets = 8
 
             # Game variables
             self.player_hp = 10
@@ -60,30 +60,27 @@ class WaveDefenseTabular(gym.Env):
 
 
     def get_current_game_state(self):
-        input_vec = [self.player.angle / 360, self.player_hp / 10]
-        #input_vec = [self.player.angle / 360]
 
+        input_vec = [self.player.angle / 360, self.player_hp / 10]
        
         if self.current_shoot - self.shoot_init > self.max_shooting_time:
             input_vec += [1]
         else:
             input_vec += [0]
-        
+           
 
-        # Add info of all enemies in game
+        # Add info of all enemies in game (either pos x and pos y or angle and distance)
         enemies_to_pad = self.max_enemies - len(self.enemies) 
         for enemy in self.enemies:
-            pos_x = enemy.rect[0] / self.screen_width
-            pos_y = enemy.rect[1] / self.screen_height
-            input_vec += [pos_x, pos_y]
+            #pos_x = enemy.rect[0] / self.screen_width
+            #pos_y = enemy.rect[1] / self.screen_height
+            delta_x, delta_y, _ = enemy.distance_to_player()
+            dist = (np.abs(delta_x) / self.screen_width) + (np.abs(delta_y) / self.screen_height)
+            angle = np.rad2deg(enemy.angle_to_player()) / 360
+            input_vec += [dist, angle]
         
         for i in range(enemies_to_pad):
-            input_vec += [0, 0]
-
-        if enemies_to_pad + len(self.enemies) > self.max_enemies:
-            print("there are enemies in game: " + str(len(self.enemies)))
-            print("enemies to pad is: " + str(enemies_to_pad))
-            
+            input_vec += [0, 0]          
 
         # Add info of all bullets in game
         bullets_to_pad = self.max_bullets - len(self.bullets) 
@@ -95,9 +92,11 @@ class WaveDefenseTabular(gym.Env):
         for i in range(bullets_to_pad):
             input_vec += [0, 0]
 
-        if bullets_to_pad + len(self.bullets) > self.max_bullets:
-            print("there are enemies in game: " + str(len(self.bullets)))
-            print("enemies to pad is: " + str(bullets_to_pad))
+        if len(input_vec) != 31:
+            print("there are bullets in game: " + str(len(self.bullets)))
+            print("bullets to pad is: " + str(bullets_to_pad))
+            print("there are enemies in game: " + str(len(self.enemies)))
+            print("enemies to pad is: " + str(enemies_to_pad))
 
         return np.array(input_vec)
 
@@ -140,10 +139,11 @@ class WaveDefenseTabular(gym.Env):
         # Step all enemies towards player and blit them
         count_damaging_enemies = 0
         for enemy in self.enemies:
-            delta_x, delta_y = enemy.step_towards_player()      
+            enemy.step_towards_player()      
             self.screen.blit(enemy.surf,  enemy.rect)
 
             # for each enemy we give negative reward depending on how close it is to the player
+            delta_x, delta_y, _ = enemy.distance_to_player()
             enemy_dist = (np.abs(delta_x) / self.screen_width) + (np.abs(delta_y) / self.screen_height)
             enemy_reward = enemy_dist - 1
             reward += enemy_reward
@@ -211,7 +211,7 @@ class WaveDefenseTabular(gym.Env):
         # Transform surface to numpy image
         state = self.get_current_game_state()
 
-        return state
+        return np.array(state)
 
     def render(self):
         self.screen.blit(self.bg,(0,0))

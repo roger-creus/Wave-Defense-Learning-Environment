@@ -1,10 +1,10 @@
-from envs.wave_defense import WaveDefense
+from wave_defense.envs.wave_defense import WaveDefense
 import gym
 
 
 # EXAMPLE RANDOM AGENT
 
-env = gym.make("WaveDefense")
+env = gym.make("WaveDefense-v1")
 env.reset()
 env.render()
 done = False

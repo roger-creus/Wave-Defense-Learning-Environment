@@ -4,3 +4,4 @@
 ./wandb/*
 ./checkpoints/*
 ./models/*
+./wave_defense.egg-info/*
