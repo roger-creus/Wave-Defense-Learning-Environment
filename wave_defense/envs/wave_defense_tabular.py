@@ -16,7 +16,7 @@ class WaveDefenseTabular(gym.Env):
 
             # Define Observation and Action spaces for RL
             self.action_space = gym.spaces.Discrete(3)
-            self.observation_space = gym.spaces.Box(low=-1, high=1, shape=(27,), dtype=np.float)
+            self.observation_space = gym.spaces.Box(low=-1, high=1, shape=(55,), dtype=np.float)
             
             # Define screen settings
             self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
@@ -45,13 +45,13 @@ class WaveDefenseTabular(gym.Env):
             self.max_enemies = 6
             
             self.current_bullets = 0
-            self.max_bullets = 8
+            self.max_bullets = 20
 
             # Game variables
             self.player_hp = 10
 
             self.init = time.time()
-            self.max_spawn_time = 3
+            self.max_spawn_time = 5
 
             self.init_damage = time.time()
             self.max_damaging_time = 1
@@ -76,14 +76,14 @@ class WaveDefenseTabular(gym.Env):
             #pos_y = enemy.rect[1] / self.screen_height
             delta_x, delta_y, _ = enemy.distance_to_player()
             dist = (np.abs(delta_x) / self.screen_width) + (np.abs(delta_y) / self.screen_height)
-            angle = np.rad2deg(enemy.angle_to_player()) / 360
+            angle = np.abs(np.rad2deg(enemy.angle_to_player()) -  180) / 360
             input_vec += [dist, angle]
         
         for i in range(enemies_to_pad):
             input_vec += [0, 0]          
 
         # Add info of all bullets in game
-        bullets_to_pad = self.max_bullets - len(self.bullets) 
+        bullets_to_pad = self.max_bullets - len(self.bullets)
         for bullet in self.bullets:
             pos_x = bullet.rect[0] / self.screen_width
             pos_y = bullet.rect[1]  / self.screen_height
@@ -91,12 +91,6 @@ class WaveDefenseTabular(gym.Env):
 
         for i in range(bullets_to_pad):
             input_vec += [0, 0]
-
-        if len(input_vec) != 31:
-            print("there are bullets in game: " + str(len(self.bullets)))
-            print("bullets to pad is: " + str(bullets_to_pad))
-            print("there are enemies in game: " + str(len(self.enemies)))
-            print("enemies to pad is: " + str(enemies_to_pad))
 
         return np.array(input_vec)
 
@@ -123,7 +117,7 @@ class WaveDefenseTabular(gym.Env):
         elif action == 2:
             self.current_shoot = time.time()
             # Shoot maximum every 1s
-            if self.current_shoot - self.shoot_init > self.max_shooting_time and self.current_bullets + 1 <= self.max_bullets:
+            if self.current_shoot - self.shoot_init > self.max_shooting_time and len(self.bullets) <= self.max_bullets:
                 bullet = self.player.shoot(self.player.rect[0], self.player.rect[1])
                 self.bullets.add(bullet)
                 self.current_bullets += 1

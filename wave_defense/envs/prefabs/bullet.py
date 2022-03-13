@@ -16,6 +16,6 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.y -= np.sin(np.deg2rad(self.angle)) * self.mov_speed
 
     def check_collision(self, another):
-        if np.sqrt( (self.rect[0] - another.rect[0])**2 + (self.rect[1] - another.rect[1])**2 ) <= 15:
+        if np.sqrt( (self.rect[0] - another.rect[0])**2 + (self.rect[1] - another.rect[1])**2 ) <= 28:
             return 1
         return 0

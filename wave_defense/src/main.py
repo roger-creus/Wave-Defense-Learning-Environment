@@ -1,7 +1,7 @@
-import envs.prefabs
-from envs.prefabs.normal_enemy import NormalEnemy
-from envs.prefabs.player import Player
-from envs.prefabs.enemy_spawner import EnemySpawner
+import wave_defense.envs.prefabs
+from wave_defense.envs.prefabs.normal_enemy import NormalEnemy
+from wave_defense.envs.prefabs.player import Player
+from wave_defense.envs.prefabs.enemy_spawner import EnemySpawner
 
 import pygame
 from pygame.locals import *
