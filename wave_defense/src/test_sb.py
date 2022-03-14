@@ -5,7 +5,7 @@ from wave_defense.envs.wave_defense_tabular import WaveDefenseTabular
 
 env = WaveDefenseTabular()
 
-model = PPO.load("./models/ppo_tabular_10M_64env_2048steps_256bs.zip")
+model = PPO.load("./models/ppo_tabular_50M_64env_2048steps_256bs.zip")
 
 obs = env.reset()
 reward = 0

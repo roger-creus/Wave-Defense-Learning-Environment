@@ -16,7 +16,7 @@ class WaveDefenseTabular(gym.Env):
 
             # Define Observation and Action spaces for RL
             self.action_space = gym.spaces.Discrete(3)
-            self.observation_space = gym.spaces.Box(low=-1, high=1, shape=(55,), dtype=np.float)
+            self.observation_space = gym.spaces.Box(low=-1, high=1, shape=(27,), dtype=np.float)
             
             # Define screen settings
             self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
@@ -45,7 +45,7 @@ class WaveDefenseTabular(gym.Env):
             self.max_enemies = 6
             
             self.current_bullets = 0
-            self.max_bullets = 20
+            self.max_bullets = 6
 
             # Game variables
             self.player_hp = 10
@@ -92,6 +92,7 @@ class WaveDefenseTabular(gym.Env):
         for i in range(bullets_to_pad):
             input_vec += [0, 0]
 
+
         return np.array(input_vec)
 
 
@@ -109,6 +110,22 @@ class WaveDefenseTabular(gym.Env):
                 self.init = current_spawn
                 current_spawn = 0
 
+        # Step all bullets forward
+        for bullet in self.bullets:
+            bullet.step_forward()
+            if bullet.rect.x >= self.screen_width or bullet.rect.x < 0 or bullet.rect.y < 0 or bullet.rect.y > self.screen_height:
+                self.bullets.remove(bullet)
+                self.current_bullets -= 1
+            for enemy in self.enemies:
+                if bullet.check_collision(enemy):
+                    self.bullets.remove(bullet)
+                    self.enemies.remove(enemy)
+                    self.current_enemies -= 1
+                    self.current_bullets -= 1
+                    # Reward for killing an enemy
+                    reward += 30
+            self.screen.blit(bullet.surf,  bullet.rect)
+
         # Process action        
         if action == 0:
             self.player.rotate(self.rotation_angle)
@@ -117,7 +134,7 @@ class WaveDefenseTabular(gym.Env):
         elif action == 2:
             self.current_shoot = time.time()
             # Shoot maximum every 1s
-            if self.current_shoot - self.shoot_init > self.max_shooting_time and len(self.bullets) <= self.max_bullets:
+            if self.current_shoot - self.shoot_init > self.max_shooting_time and len(self.bullets) < self.max_bullets:
                 bullet = self.player.shoot(self.player.rect[0], self.player.rect[1])
                 self.bullets.add(bullet)
                 self.current_bullets += 1
@@ -144,25 +161,6 @@ class WaveDefenseTabular(gym.Env):
             
             if enemy_dist <= 0.12:
                 count_damaging_enemies += 1
-
-
-        # Step all bullets forward
-        for bullet in self.bullets:
-            bullet.step_forward()
-            if bullet.rect.x >= self.screen_width or bullet.rect.x < 0 or bullet.rect.y < 0 or bullet.rect.y > self.screen_height:
-                self.bullets.remove(bullet)
-                self.current_bullets -= 1
-            for enemy in self.enemies:
-                if bullet.check_collision(enemy):
-                    self.bullets.remove(bullet)
-                    self.enemies.remove(enemy)
-                    self.current_enemies -= 1
-                    self.current_bullets -= 1
-                    # Reward for killing an enemy
-                    reward += 30
-
-            
-            self.screen.blit(bullet.surf,  bullet.rect)
         
         self.screen.blit(self.player.surf, self.player.rect)
 
