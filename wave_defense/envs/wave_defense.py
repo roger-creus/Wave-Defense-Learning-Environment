@@ -15,13 +15,11 @@ class WaveDefense(gym.Env):
             self.screen_height = 256
 
             # Define Observation and Action spaces for RL
-            self.action_space = gym.spaces.Discrete(4)
+            self.action_space = gym.spaces.Discrete(3)
             self.observation_space = gym.spaces.Box(low=0, high=255, shape=(self.screen_height, self.screen_width, 3), dtype=np.uint8)
             
             # Define screen settings
             self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
-            self.bg = pygame.image.load("./wave_defense/envs/resources/sprites/black.jpg")
-            self.bg = pygame.transform.scale(self.bg, (self.screen_width, self.screen_height)) 
 
             # Instantiate player and customize it
             self.player_width = 30
@@ -30,6 +28,7 @@ class WaveDefense(gym.Env):
             self.shoot_init = time.time()
             self.player = Player("./wave_defense/envs/resources/sprites/player.png", self.player_width, self.player_height, self.screen_width, self.screen_height)
             self.rotation_angle = 10
+            self.current_shoot = 0
 
             # Init clock
             self.clock = pygame.time.Clock()
@@ -59,7 +58,7 @@ class WaveDefense(gym.Env):
 
 
     def step(self, action):
-        reward = 1
+        reward = 5
         done = False
 
         # Handle the spawners
@@ -68,41 +67,9 @@ class WaveDefense(gym.Env):
             if self.current_enemies + 1 <= self.max_enemies:
                 enemy = self.spawner.spawn_enemy()
                 self.enemies.add(enemy)
+                self.current_enemies += 1
                 self.init = current_spawn
                 current_spawn = 0
-                self.current_enemies += 1
-
-        if action == 0:
-            self.player.rotate(self.rotation_angle)
-        elif action == 1:
-            self.player.rotate(-self.rotation_angle)
-        elif action == 2:
-            current_shoot = time.time()
-            # Shoot maximum every 0.5s
-            if current_shoot - self.shoot_init > self.max_shooting_time and self.current_bullets + 1 <= self.max_bullets:
-                bullet = self.player.shoot(self.player.rect[0], self.player.rect[1])
-                self.bullets.add(bullet)
-                self.current_bullets += 1
-                self.shoot_init = current_shoot
-                current_shoot = 0
-            #else:
-                # -5 reward if trying to shoot when "reloading"
-                #reward -= 5
-
-        # Clear canvas once every frame before blitting everything
-        self.screen.blit(self.bg,(0,0))
-        clear = True
-
-        # Step all enemies towards player and blit them
-        count_damaging_enemies = 0
-        for enemy in self.enemies:
-            damaging = enemy.step_towards_player()
-            self.screen.blit(enemy.surf,  enemy.rect)
-            if damaging:
-                count_damaging_enemies += 1
-
-        # -5 reward for each damaging enemy in current frame
-        reward -= count_damaging_enemies
 
         # Step all bullets forward
         for bullet in self.bullets:
@@ -117,9 +84,44 @@ class WaveDefense(gym.Env):
                     self.current_enemies -= 1
                     self.current_bullets -= 1
                     # Reward for killing an enemy
-                    reward += 50
-            
+                    reward += 30
             self.screen.blit(bullet.surf,  bullet.rect)
+
+        # Process action        
+        if action == 0:
+            self.player.rotate(self.rotation_angle)
+        elif action == 1:
+            self.player.rotate(-self.rotation_angle)
+        elif action == 2:
+            self.current_shoot = time.time()
+            # Shoot maximum every 1s
+            if self.current_shoot - self.shoot_init > self.max_shooting_time and len(self.bullets) < self.max_bullets:
+                bullet = self.player.shoot(self.player.rect[0], self.player.rect[1])
+                self.bullets.add(bullet)
+                self.current_bullets += 1
+                self.shoot_init = self.current_shoot
+                self.current_shoot = 0
+            #else:
+                # -5 reward if trying to shoot when "reloading"
+                #reward -= 5
+
+        # Clear canvas once every frame before blitting everything
+        self.screen.fill((0,0,0))
+
+        # Step all enemies towards player and blit them
+        count_damaging_enemies = 0
+        for enemy in self.enemies:
+            enemy.step_towards_player()      
+            self.screen.blit(enemy.surf,  enemy.rect)
+
+            # for each enemy we give negative reward depending on how close it is to the player
+            delta_x, delta_y, _ = enemy.distance_to_player()
+            enemy_dist = (np.abs(delta_x) / self.screen_width) + (np.abs(delta_y) / self.screen_height)
+            enemy_reward = enemy_dist - 1
+            reward += enemy_reward
+            
+            if enemy_dist <= 0.12:
+                count_damaging_enemies += 1
         
         self.screen.blit(self.player.surf, self.player.rect)
 
@@ -132,12 +134,9 @@ class WaveDefense(gym.Env):
         if current_damage - self.init_damage > self.max_damaging_time:
             self.player_hp -= count_damaging_enemies
             if self.player_hp <= 0:
-                return next_state, -count_damaging_enemies, True, {} 
+                return next_state, reward, True, {} 
             self.init_damage = current_damage
             current_damage = 0
-
-        next_state = pygame.surfarray.array3d(self.screen)
-        next_state = next_state.swapaxes(0,1)
         
         self.clock.tick(60)
 
@@ -160,7 +159,7 @@ class WaveDefense(gym.Env):
         self.shoot_init = time.time()
 
         # Draw empty board with only the player
-        self.screen.blit(self.bg, (0,0))
+        self.screen.fill((0,0,0))
         self.screen.blit(self.player.surf, self.player.rect)
         
         # Transform surface to numpy image
@@ -170,7 +169,7 @@ class WaveDefense(gym.Env):
         return state
 
     def render(self):
-        self.screen.blit(self.bg,(0,0))
+        self.screen.fill((0,0,0))
         self.screen.blit(self.player.surf, self.player.rect)
 
         # Blit all enemies

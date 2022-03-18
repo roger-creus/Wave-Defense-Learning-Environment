@@ -16,7 +16,7 @@ class WaveDefenseTabular(gym.Env):
 
             # Define Observation and Action spaces for RL
             self.action_space = gym.spaces.Discrete(3)
-            self.observation_space = gym.spaces.Box(low=-1, high=1, shape=(27,), dtype=np.float)
+            self.observation_space = gym.spaces.Box(low=-1, high=1, shape=(35,), dtype=np.float)
             
             # Define screen settings
             self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
@@ -45,7 +45,7 @@ class WaveDefenseTabular(gym.Env):
             self.max_enemies = 6
             
             self.current_bullets = 0
-            self.max_bullets = 6
+            self.max_bullets = 10
 
             # Game variables
             self.player_hp = 10
@@ -197,7 +197,7 @@ class WaveDefenseTabular(gym.Env):
         self.shoot_init = time.time()
 
         # Draw empty board with only the player
-        self.screen.blit(self.bg, (0,0))
+        self.screen.fill((0,0,0))
         self.screen.blit(self.player.surf, self.player.rect)
         
         # Transform surface to numpy image
@@ -206,7 +206,7 @@ class WaveDefenseTabular(gym.Env):
         return np.array(state)
 
     def render(self):
-        self.screen.blit(self.bg,(0,0))
+        self.screen.fill((0,0,0))
         self.screen.blit(self.player.surf, self.player.rect)
 
         # Blit all enemies
