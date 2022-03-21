@@ -1,11 +1,12 @@
 import gym
 from stable_baselines3 import PPO
 from stable_baselines3.common.env_util import make_vec_env
+from wave_defense.envs.wave_defense import WaveDefense
 from wave_defense.envs.wave_defense_tabular import WaveDefenseTabular
 
-env = WaveDefenseTabular()
+env = WaveDefense()
 
-model = PPO.load("./models/ppo_tabular_10M_64env_2048steps_256bs.zip")
+model = PPO.load("./models/ppo_visual_1M_16env_2048steps_64bs.zip")
 
 obs = env.reset()
 reward = 0

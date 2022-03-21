@@ -11,19 +11,17 @@ from IPython import embed
 
 # Init and define screen
 pygame.init()
-screen_width = 800
-screen_height = 800
+screen_width = 256  
+screen_height = 256
 screen = pygame.display.set_mode((screen_width, screen_height))
-bg = pygame.image.load("./wave_defense/envs/resources/sprites/black.jpg")
-bg = pygame.transform.scale(bg, (screen_width, screen_height)) 
 
 # Init clock
 clock = pygame.time.Clock()
 
 # Instantiate player
-player_width = 45
-player_height = 30
-max_shooting_time = 0.5
+player_width = 30
+player_height = 20
+max_shooting_time = 1
 shoot_init = time.time()
 player = Player("./wave_defense/envs/resources/sprites/player.png", player_width, player_height, screen_width, screen_height)
 
@@ -84,7 +82,7 @@ while running:
     # Clear canvas once every frame before blitting everything
     clear = False
     if not clear:
-        screen.blit(bg,(0,0))
+        screen.fill((0,0,0))
         clear = True
 
     # Step all enemies towards player and blit them

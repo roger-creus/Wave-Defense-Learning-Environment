@@ -2,9 +2,9 @@ import pygame
 import numpy as np
 
 class NormalEnemy(pygame.sprite.Sprite):
-    def __init__(self, player,x, y, mov_speed=0.75, damage_distance = 75):
+    def __init__(self, player,x, y, mov_speed=0.25, damage_distance = 35):
         super(NormalEnemy, self).__init__() 
-        self.surf = pygame.Surface((35, 35))
+        self.surf = pygame.Surface((20, 20))
         self.surf.fill((0, 200, 255))
         self.rect = self.surf.get_rect(center=(x,y))
         self.player = player
@@ -20,7 +20,7 @@ class NormalEnemy(pygame.sprite.Sprite):
             pos_x = self.rect[0] + np.cos(angle) * self.mov_speed
             pos_y = self.rect[1] + np.sin(angle) * self.mov_speed 
 
-            self.rect = (pos_x, pos_y, 35, 35)            
+            self.rect = (pos_x, pos_y, 20, 20)            
             
 
     def distance_to_player(self):

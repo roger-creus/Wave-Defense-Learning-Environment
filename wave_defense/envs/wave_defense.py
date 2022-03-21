@@ -49,7 +49,7 @@ class WaveDefense(gym.Env):
             self.player_hp = 10
 
             self.init = time.time()
-            self.max_spawn_time = 3
+            self.max_spawn_time = 5
 
             self.init_damage = time.time()
             self.max_damaging_time = 1
@@ -70,22 +70,6 @@ class WaveDefense(gym.Env):
                 self.current_enemies += 1
                 self.init = current_spawn
                 current_spawn = 0
-
-        # Step all bullets forward
-        for bullet in self.bullets:
-            bullet.step_forward()
-            if bullet.rect.x >= self.screen_width or bullet.rect.x < 0 or bullet.rect.y < 0 or bullet.rect.y > self.screen_height:
-                self.bullets.remove(bullet)
-                self.current_bullets -= 1
-            for enemy in self.enemies:
-                if bullet.check_collision(enemy):
-                    self.bullets.remove(bullet)
-                    self.enemies.remove(enemy)
-                    self.current_enemies -= 1
-                    self.current_bullets -= 1
-                    # Reward for killing an enemy
-                    reward += 30
-            self.screen.blit(bullet.surf,  bullet.rect)
 
         # Process action        
         if action == 0:
@@ -120,8 +104,25 @@ class WaveDefense(gym.Env):
             enemy_reward = enemy_dist - 1
             reward += enemy_reward
             
-            if enemy_dist <= 0.12:
+           
+            if enemy_dist <= 0.2:
                 count_damaging_enemies += 1
+
+        # Step all bullets forward
+        for bullet in self.bullets:
+            bullet.step_forward()
+            if bullet.rect.x >= self.screen_width or bullet.rect.x < 0 or bullet.rect.y < 0 or bullet.rect.y > self.screen_height:
+                self.bullets.remove(bullet)
+                self.current_bullets -= 1
+            for enemy in self.enemies:
+                if bullet.check_collision(enemy):
+                    self.bullets.remove(bullet)
+                    self.enemies.remove(enemy)
+                    self.current_enemies -= 1
+                    self.current_bullets -= 1
+                    # Reward for killing an enemy
+                    reward += 30
+            self.screen.blit(bullet.surf,  bullet.rect)
         
         self.screen.blit(self.player.surf, self.player.rect)
 
