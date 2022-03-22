@@ -1,4 +1,6 @@
 ./logs/*
+./logs/ppo_visual/*
+./logs/ppo_tabular_tensorboard/*
 ./wave_defense/__pycache__/*
 ./wave_defense/wave_defense.egg-info/*
 ./wandb/*
