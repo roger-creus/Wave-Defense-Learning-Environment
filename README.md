@@ -1,6 +1,8 @@
-# Wave-Defense-Learning-Environment (Work in Progress)
+# Wave-Defense-Learning-Environment
 
 A videogame made with PyGame (python) turned into an Open AI Gym Learning Environment.
+
+See this video to see the results: https://www.youtube.com/watch?v=VOmj7_nnPJ0&t=1s&ab_channel=RogerCreusCastanyer
 
 # Files
 
