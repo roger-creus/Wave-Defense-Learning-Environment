@@ -2,7 +2,7 @@
 
 ## Description
 
-Wave defense is an RL environment inspired from wave defense games. 
+Wave defense is a gym-like RL environment inspired from wave defense games. 
 
 ![Alt text](screenshots/screen1.png?raw=true)
 
