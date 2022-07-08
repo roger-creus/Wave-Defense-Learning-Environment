@@ -1,11 +1,53 @@
 # Wave-Defense-Learning-Environment
 
-Wave defense is an RL environment based on a custom game inspired from the typical wave defense games. The agent is a static cannon in the center of the map and can only rotate and shoot, while the enemies keep spawning around and willing to destroy the agent. 
+## Description
 
-For the RL settings, the agent is rewarded depending on the number of enemies on screen (the lower the better) and the distance to these (the closer the worse). At each frame the agent choses wether to rotate left, rotate right, shoot, or do nothing. 
+Wave defense is an RL environment inspired from wave defense games. 
 
-See this video to see the results: https://www.youtube.com/watch?v=VOmj7_nnPJ0&t=1s&ab_channel=RogerCreusCastanyer
+The agent is a static cannon in the center of the map and can only rotate and shoot. Enemies keep spawning around the agent and move towards the agent willing to destroy it.
 
-# Files
+![Alt text](screenshots/screen1.png?raw=true "The agent (cannon) shooting a bullet (red square) while an enemy (blue square) moves towards the agent")
 
-The environment class (based on Open AI Gym) is in **./wave_defense/envs/wave_defense.py** and all the game classes (player, enemy, spawner...) can be found in **./wave_defense/envs/prefabs/**
+## Environment versions
+
+There exist 2 versions of the environment which can be instantiated as:
+
+```
+env1 = gym.make("WaveDefense-v0")
+env2 = gym.make("WaveDefense-v1")
+```
+
+WaveDefense-v0 is for training RL agents from pixels, so it returns RGB observations of shape (256, 256, 3).
+
+WaveDefense-v1 is for training RL agents from a tabular representation of the states, so it returns observations as vectors of length 35. The information in these vectors consists of the player's current angle, current health points, enemy distances and enemy angles. 
+
+## Random agent
+
+Watching a random agent playing the game can be done as follows:
+
+```
+import gym
+
+env = gym.make("WaveDefense-v0")
+env.reset()
+env.render()
+done = False
+
+while done is False:
+    obs, rew, done, info = env.step(env.action_space.sample()) # take a random action
+    env.render()
+env.close()
+```
+
+## Reward distribution
+
+The agent is rewarded depending on the number of enemies on screen (the lower the better) and the distance to these (the closer the worse). The reward distribution is the same for all the versions of the environment. 
+
+## Action Space
+
+At each frame the agent choses wether to rotate left, rotate right, shoot, or do nothing. 
+
+
+## RL Training Results
+Watch this video to see preliminary results on the environment: https://www.youtube.com/watch?v=VOmj7_nnPJ0&t=1s&ab_channel=RogerCreusCastanyer
+

@@ -26,7 +26,7 @@ class WaveDefense(gym.Env):
             self.player_height = 20
             self.max_shooting_time = 1
             self.shoot_init = time.time()
-            self.player = Player("../input/wave-defense-kaggle-version-2/Wave-Defense-Learning-Environment-main/wave_defense/envs/resources/sprites/player.png", self.player_width, self.player_height, self.screen_width, self.screen_height)
+            self.player = Player("wave_defense/envs/resources/sprites/player.png", self.player_width, self.player_height, self.screen_width, self.screen_height)
             self.rotation_angle = 10
             self.current_shoot = 0
 

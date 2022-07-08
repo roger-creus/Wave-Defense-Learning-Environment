@@ -1,8 +1,9 @@
 Metadata-Version: 2.1
 Name: wave-defense
 Version: 0.0.1
-Summary: UNKNOWN
+Summary: A Reinforcement Learning environment inspired from wave defense games
 Home-page: UNKNOWN
+Author: Roger Creus
 License: UNKNOWN
 Platform: UNKNOWN
 
