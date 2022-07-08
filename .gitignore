@@ -8,3 +8,4 @@
 ./models/*
 ./wave_defense.egg-info/*
 ./screenshots/*
+./dist/*
