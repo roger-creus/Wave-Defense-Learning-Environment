@@ -1,0 +1,7 @@
+README.md
+setup.py
+WaveDefense.egg-info/PKG-INFO
+WaveDefense.egg-info/SOURCES.txt
+WaveDefense.egg-info/dependency_links.txt
+WaveDefense.egg-info/requires.txt
+WaveDefense.egg-info/top_level.txt
