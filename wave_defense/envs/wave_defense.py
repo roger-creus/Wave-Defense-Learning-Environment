@@ -7,7 +7,6 @@ import pygame
 from pygame.locals import *
 import numpy as np
 import time
-from IPython import embed
 
 class WaveDefense(gym.Env):
     def __init__(self):
