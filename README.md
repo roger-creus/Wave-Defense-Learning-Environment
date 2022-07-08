@@ -8,6 +8,19 @@ Wave defense is an RL environment inspired from wave defense games.
 
 The agent (cannon) shooting a bullet (red square) while an enemy (blue square) moves towards the agent.
 
+
+## Installation
+
+(Optional) Create a new conda environment
+```
+conda create -n wave_defense python=3.6
+```
+
+Install the package from pypi (https://pypi.org/project/WaveDefense/0.5/)
+```
+pip install WaveDefense==0.5
+```
+
 ## Environment versions
 
 There exist 2 versions of the environment which can be instantiated as:
