@@ -1,6 +1,0 @@
-setup.py
-wave_defense.egg-info/PKG-INFO
-wave_defense.egg-info/SOURCES.txt
-wave_defense.egg-info/dependency_links.txt
-wave_defense.egg-info/requires.txt
-wave_defense.egg-info/top_level.txt
