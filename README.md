@@ -4,9 +4,9 @@
 
 Wave defense is an RL environment inspired from wave defense games. 
 
-The agent is a static cannon in the center of the map and can only rotate and shoot. Enemies keep spawning around the agent and move towards the agent willing to destroy it.
+![Alt text](screenshots/screen1.png?raw=true)
 
-![Alt text](screenshots/screen1.png?raw=true "The agent (cannon) shooting a bullet (red square) while an enemy (blue square) moves towards the agent")
+The agent (cannon) shooting a bullet (red square) while an enemy (blue square) moves towards the agent.
 
 ## Environment versions
 
