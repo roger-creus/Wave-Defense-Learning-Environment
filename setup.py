@@ -6,7 +6,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='WaveDefense',
-    version='0.5', 
+    version='0.6', 
     install_requires=['gym', 'pygame', 'numpy'], 
     py_modules=['WaveDefense', 'WaveDefense.envs.wave_defense', 'WaveDefense.envs.wave_defense_tabular', 'WaveDefense.envs', 'WaveDefense.envs.prefabs.bullet', 'WaveDefense.envs.prefabs.enemy_spawner', 'WaveDefense.envs.prefabs.normal_enemy', 'WaveDefense.envs.prefabs.player', 'WaveDefense.envs.prefabs'], 
     packages = find_packages(),

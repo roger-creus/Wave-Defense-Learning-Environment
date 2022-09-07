@@ -108,7 +108,6 @@ class WaveDefense(gym.Env):
             enemy_reward = enemy_dist - 1
             reward += enemy_reward
             
-            
             if enemy_dist <= 0.2:
                 count_damaging_enemies += 1
 
