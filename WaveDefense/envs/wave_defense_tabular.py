@@ -53,10 +53,10 @@ class WaveDefenseTabular(gym.Env):
             self.player_hp = 10
 
             self.init = time.time()
-            self.max_spawn_time = 5
+            self.max_spawn_time = 3
 
             self.init_damage = time.time()
-            self.max_damaging_time = 1
+            self.max_damaging_time = .5
 
             self.score = 0
 
@@ -99,12 +99,12 @@ class WaveDefenseTabular(gym.Env):
 
 
     def step(self, action):
-        reward = 5
+        reward = 1
         done = False
 
         # Handle the spawners
         current_spawn = time.time()
-        if current_spawn - self.init > self.max_spawn_time:
+        if current_spawn - self.init > self.max_spawn_time or self.current_enemies == 0:
             if self.current_enemies + 1 <= self.max_enemies:
                 enemy = self.spawner.spawn_enemy()
                 self.enemies.add(enemy)

@@ -2,7 +2,7 @@ import pygame
 import numpy as np
 
 class NormalEnemy(pygame.sprite.Sprite):
-    def __init__(self, player,x, y, mov_speed=0.25, damage_distance = 35):
+    def __init__(self, player,x, y, mov_speed=1.5, damage_distance = 35):
         super(NormalEnemy, self).__init__() 
         self.surf = pygame.Surface((20, 20))
         self.surf.fill((0, 200, 255))

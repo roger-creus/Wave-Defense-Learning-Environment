@@ -1,12 +1,16 @@
 import gym
-import WaveDefense
+from envs.wave_defense_tabular import WaveDefenseTabular
 
-env = gym.make('WaveDefense-v1') 
+env = WaveDefenseTabular()
 
 obs = env.reset()
 done = False
+steps = 0
 while not done:
+    steps+=1
     action = env.action_space.sample()
     obs, reward, done, info = env.step(action)
-    print(reward)
     env.render()
+    print(reward)
+
+print(steps)

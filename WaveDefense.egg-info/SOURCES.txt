@@ -2,6 +2,7 @@ MANIFEST.in
 README.md
 setup.py
 WaveDefense/__init__.py
+WaveDefense/random_agent.py
 WaveDefense.egg-info/PKG-INFO
 WaveDefense.egg-info/SOURCES.txt
 WaveDefense.egg-info/dependency_links.txt
