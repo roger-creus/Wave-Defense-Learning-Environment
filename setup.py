@@ -8,7 +8,7 @@ setup(
     name='WaveDefense',
     version='0.7', 
     install_requires=['gym', 'pygame', 'numpy'], 
-    py_modules=['WaveDefense', 'WaveDefense.envs.wave_defense', 'WaveDefense.envs.wave_defense_tabular', 'WaveDefense.envs', 'WaveDefense.envs.prefabs.bullet', 'WaveDefense.envs.prefabs.enemy_spawner', 'WaveDefense.envs.prefabs.normal_enemy', 'WaveDefense.envs.prefabs.player', 'WaveDefense.envs.prefabs'], 
+    py_modules=['WaveDefense', 'WaveDefense.envs.wave_defense', 'WaveDefense.envs.wave_defense_no_reward', 'WaveDefense.envs.wave_defense_tabular', 'WaveDefense.envs', 'WaveDefense.envs.prefabs.bullet', 'WaveDefense.envs.prefabs.enemy_spawner', 'WaveDefense.envs.prefabs.normal_enemy', 'WaveDefense.envs.prefabs.player', 'WaveDefense.envs.prefabs'], 
     packages = find_packages(),
     include_package_data=True,
     author = "Roger Creus", 
