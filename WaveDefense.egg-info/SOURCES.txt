@@ -12,6 +12,7 @@ WaveDefense.egg-info/top_level.txt
 WaveDefense/envs/__init__.py
 WaveDefense/envs/player.png
 WaveDefense/envs/wave_defense.py
+WaveDefense/envs/wave_defense_no_reward.py
 WaveDefense/envs/wave_defense_tabular.py
 WaveDefense/envs/prefabs/__init__.py
 WaveDefense/envs/prefabs/bullet.py
