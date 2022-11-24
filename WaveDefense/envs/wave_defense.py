@@ -42,7 +42,7 @@ class WaveDefense(gym.Env):
             self.bullets = pygame.sprite.Group()
 
             # Instantiate enemy spawner
-            self.spawner = EnemySpawner(self.screen_width, self.screen_height, self.player, self.enemies)
+            self.spawner = EnemySpawner(self.screen_width, self.screen_height, self.player, self.enemies, enemy_mov_speed = 1)
             self.current_enemies = 0
             self.max_enemies = 6
 
@@ -62,12 +62,12 @@ class WaveDefense(gym.Env):
 
 
     def step(self, action):
-        reward = 5
+        reward = 1
         done = False
 
         # Handle the spawners
         current_spawn = time.time()
-        if current_spawn - self.init > self.max_spawn_time:
+        if current_spawn - self.init > self.max_spawn_time or self.current_enemies == 0:
             if self.current_enemies + 1 <= self.max_enemies:
                 enemy = self.spawner.spawn_enemy()
                 self.enemies.add(enemy)
@@ -150,8 +150,8 @@ class WaveDefense(gym.Env):
         # Empty all enemies and bullets in game
         self.enemies = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
-        self.current_enemies -= 1
-        self.current_bullets -= 1
+        self.current_enemies = 0
+        self.current_bullets = 0
         
         # Reset player health points and score
         self.player_hp = 10

@@ -1,7 +1,8 @@
 import gym
 from envs.wave_defense_tabular import WaveDefenseTabular
+from envs.wave_defense import WaveDefense
 
-env = WaveDefenseTabular()
+env = WaveDefense()
 
 obs = env.reset()
 done = False
