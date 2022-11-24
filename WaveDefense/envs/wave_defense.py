@@ -10,10 +10,9 @@ import time
 import os
 
 class WaveDefense(gym.Env):
-    def __init__(self):
+    def __init__(self, seed):
             
-            # this is set when calling make_env() wrapper (see /models)
-            self.seed = 1
+            self.seed = seed
 
             self.screen_width = 256
             self.screen_height = 256
