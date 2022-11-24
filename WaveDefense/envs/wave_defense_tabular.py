@@ -10,11 +10,11 @@ import time
 import os
 
 class WaveDefenseTabular(gym.Env):
-    def __init__(self, seed):
+    def __init__(self):
             this_dir, this_filename = os.path.split(__file__)
 
             # this is set when calling make_env() wrapper (see /models)
-            self.seed = seed
+            self._seed = 1
 
             self.screen_width = 800
             self.screen_height = 800
@@ -226,3 +226,7 @@ class WaveDefenseTabular(gym.Env):
         
 
         pygame.display.update()
+
+    def seed(self, seed):
+        self._seed = seed
+        self.spawner = EnemySpawner(self.screen_width, self.screen_height, self.player, self.enemies, enemy_mov_speed = 2.5, seed = self._seed)

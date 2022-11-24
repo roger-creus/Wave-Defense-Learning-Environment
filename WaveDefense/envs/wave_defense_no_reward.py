@@ -10,9 +10,9 @@ import time
 import os
 
 class WaveDefenseNoReward(gym.Env):
-    def __init__(self, seed):
+    def __init__(self):
 
-            self.seed = seed
+            self._seed = 1
 
             self.screen_width = 256
             self.screen_height = 256
@@ -180,3 +180,7 @@ class WaveDefenseNoReward(gym.Env):
            self.screen.blit(bullet.surf,  bullet.rect)
 
         pygame.display.update()
+
+    def seed(self, seed):
+        self._seed = seed
+        self.spawner = EnemySpawner(self.screen_width, self.screen_height, self.player, self.enemies, enemy_mov_speed = 1, seed = _self.seed)
