@@ -11,6 +11,10 @@ import os
 
 class WaveDefenseNoReward(gym.Env):
     def __init__(self):
+
+            # this is set when calling make_env() wrapper (see /models)
+            self.seed = 1
+
             self.screen_width = 256
             self.screen_height = 256
 
@@ -42,7 +46,7 @@ class WaveDefenseNoReward(gym.Env):
             self.bullets = pygame.sprite.Group()
 
             # Instantiate enemy spawner
-            self.spawner = EnemySpawner(self.screen_width, self.screen_height, self.player, self.enemies, enemy_mov_speed = 1)
+            self.spawner = EnemySpawner(self.screen_width, self.screen_height, self.player, self.enemies, enemy_mov_speed = 1, seed = self.seed)
             self.current_enemies = 0
             self.max_enemies = 6
 

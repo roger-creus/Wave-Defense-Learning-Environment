@@ -3,7 +3,7 @@ import random
 from .normal_enemy import NormalEnemy
 
 class EnemySpawner():
-    def __init__(self, width, height, player, enemies, enemy_mov_speed=1.5):
+    def __init__(self, width, height, player, enemies, enemy_mov_speed=1.5, seed = 1):
         super(EnemySpawner, self).__init__() 
         self.init = time.time()
         self.player = player
@@ -11,6 +11,8 @@ class EnemySpawner():
         self.width = width
         self.height = height
         self.enemy_mov_speed = enemy_mov_speed
+        
+        random.seed(seed)
 
     def spawn_enemy(self):
         if random.randint(0,1) == 0:

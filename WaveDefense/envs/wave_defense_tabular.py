@@ -13,6 +13,9 @@ class WaveDefenseTabular(gym.Env):
     def __init__(self):
             this_dir, this_filename = os.path.split(__file__)
 
+            # this is set when calling make_env() wrapper (see /models)
+            self.seed = 1
+
             self.screen_width = 800
             self.screen_height = 800
 
@@ -42,7 +45,7 @@ class WaveDefenseTabular(gym.Env):
             self.bullets = pygame.sprite.Group()
 
             # Instantiate enemy spawner
-            self.spawner = EnemySpawner(self.screen_width, self.screen_height, self.player, self.enemies)
+            self.spawner = EnemySpawner(self.screen_width, self.screen_height, self.player, self.enemies, seed = self.seed)
             self.current_enemies = 0
             self.max_enemies = 6
             
