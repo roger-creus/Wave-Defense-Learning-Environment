@@ -184,4 +184,4 @@ class WaveDefenseNoReward(gym.Env):
 
     def seed(self, seed):
         self._seed = seed
-        self.spawner = EnemySpawner(self.screen_width, self.screen_height, self.player, self.enemies, enemy_mov_speed = 1, seed = _self.seed)
+        self.spawner = EnemySpawner(self.screen_width, self.screen_height, self.player, self.enemies, enemy_mov_speed = 1, seed = self._seed)

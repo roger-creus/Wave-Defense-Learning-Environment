@@ -1,73 +1,77 @@
 Metadata-Version: 2.1
 Name: WaveDefense
 Version: 1.6
+Summary: UNKNOWN
+Home-page: UNKNOWN
 Author: Roger Creus
 Author-email: creus99@protonmail.com
+License: UNKNOWN
+Description: # Wave-Defense-Learning-Environment
+        
+        ## Description
+        
+        Wave defense is a gym-like RL environment inspired from wave defense games. 
+        
+        ![Alt text](screenshots/screen1.png?raw=true)
+        
+        The agent (cannon) shooting a bullet (red square) while an enemy (blue square) moves towards the agent.
+        
+        
+        ## Installation
+        
+        (Optional) Create a new conda environment
+        ```
+        conda create -n wave_defense python=3.6
+        ```
+        
+        Install the package from pypi (https://pypi.org/project/WaveDefense/0.5/)
+        ```
+        pip install WaveDefense==0.5
+        ```
+        
+        ## Environment versions
+        
+        There exist 2 versions of the environment which can be instantiated as:
+        
+        ```
+        env1 = gym.make("WaveDefense-v0")
+        env2 = gym.make("WaveDefense-v1")
+        ```
+        
+        WaveDefense-v0 is for training RL agents from pixels, so it returns RGB observations of shape (256, 256, 3).
+        
+        WaveDefense-v1 is for training RL agents from a tabular representation of the states, so it returns observations as vectors of length 35. The information in these vectors consists of the player's current angle, current health points, enemy distances and enemy angles. 
+        
+        ## Random agent
+        
+        Watching a random agent playing the game can be done as follows:
+        
+        ```
+        import gym
+        
+        env = gym.make("WaveDefense-v0")
+        env.reset()
+        env.render()
+        done = False
+        
+        while done is False:
+            obs, rew, done, info = env.step(env.action_space.sample()) # take a random action
+            env.render()
+        env.close()
+        ```
+        
+        ## Reward distribution
+        
+        The agent is rewarded depending on the number of enemies on screen (the lower the better) and the distance to these (the closer the worse). The reward distribution is the same for all the versions of the environment. 
+        
+        ## Action Space
+        
+        At each frame the agent choses wether to rotate left, rotate right, shoot, or do nothing. 
+        
+        
+        ## RL Training Results
+        Watch this video to see preliminary results on the environment: https://www.youtube.com/watch?v=VOmj7_nnPJ0&t=1s&ab_channel=RogerCreusCastanyer
+        
+        
+Platform: UNKNOWN
 Description-Content-Type: text/markdown
-
-# Wave-Defense-Learning-Environment
-
-## Description
-
-Wave defense is a gym-like RL environment inspired from wave defense games. 
-
-![Alt text](screenshots/screen1.png?raw=true)
-
-The agent (cannon) shooting a bullet (red square) while an enemy (blue square) moves towards the agent.
-
-
-## Installation
-
-(Optional) Create a new conda environment
-```
-conda create -n wave_defense python=3.6
-```
-
-Install the package from pypi (https://pypi.org/project/WaveDefense/0.5/)
-```
-pip install WaveDefense==0.5
-```
-
-## Environment versions
-
-There exist 2 versions of the environment which can be instantiated as:
-
-```
-env1 = gym.make("WaveDefense-v0")
-env2 = gym.make("WaveDefense-v1")
-```
-
-WaveDefense-v0 is for training RL agents from pixels, so it returns RGB observations of shape (256, 256, 3).
-
-WaveDefense-v1 is for training RL agents from a tabular representation of the states, so it returns observations as vectors of length 35. The information in these vectors consists of the player's current angle, current health points, enemy distances and enemy angles. 
-
-## Random agent
-
-Watching a random agent playing the game can be done as follows:
-
-```
-import gym
-
-env = gym.make("WaveDefense-v0")
-env.reset()
-env.render()
-done = False
-
-while done is False:
-    obs, rew, done, info = env.step(env.action_space.sample()) # take a random action
-    env.render()
-env.close()
-```
-
-## Reward distribution
-
-The agent is rewarded depending on the number of enemies on screen (the lower the better) and the distance to these (the closer the worse). The reward distribution is the same for all the versions of the environment. 
-
-## Action Space
-
-At each frame the agent choses wether to rotate left, rotate right, shoot, or do nothing. 
-
-
-## RL Training Results
-Watch this video to see preliminary results on the environment: https://www.youtube.com/watch?v=VOmj7_nnPJ0&t=1s&ab_channel=RogerCreusCastanyer
-
