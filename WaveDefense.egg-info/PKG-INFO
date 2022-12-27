@@ -1,11 +1,8 @@
 Metadata-Version: 2.1
 Name: WaveDefense
-Version: 1.4
-Summary: UNKNOWN
+Version: 1.6
 Author: Roger Creus
 Author-email: creus99@protonmail.com
-License: UNKNOWN
-Platform: UNKNOWN
 Description-Content-Type: text/markdown
 
 # Wave-Defense-Learning-Environment
@@ -73,6 +70,4 @@ At each frame the agent choses wether to rotate left, rotate right, shoot, or do
 
 ## RL Training Results
 Watch this video to see preliminary results on the environment: https://www.youtube.com/watch?v=VOmj7_nnPJ0&t=1s&ab_channel=RogerCreusCastanyer
-
-
 

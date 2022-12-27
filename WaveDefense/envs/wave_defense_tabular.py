@@ -223,9 +223,9 @@ class WaveDefenseTabular(gym.Env):
            self.screen.blit(bullet.surf,  bullet.rect)
 
         state = self.get_current_game_state()
-        
 
         pygame.display.update()
+        return pygame.surfarray.array3d(self.screen)
 
     def seed(self, seed):
         self._seed = seed

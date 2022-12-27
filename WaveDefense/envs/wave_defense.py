@@ -66,7 +66,6 @@ class WaveDefense(gym.Env):
 
     def step(self, action):
         reward = 1
-        done = False
 
         # Handle the spawners
         current_spawn = time.time()
@@ -187,6 +186,8 @@ class WaveDefense(gym.Env):
            self.screen.blit(bullet.surf,  bullet.rect)
 
         pygame.display.update()
+        
+        return pygame.surfarray.array3d(self.screen)
 
     def seed(self, seed):
         self._seed = seed

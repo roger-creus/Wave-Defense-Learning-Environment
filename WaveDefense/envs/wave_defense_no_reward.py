@@ -180,6 +180,7 @@ class WaveDefenseNoReward(gym.Env):
            self.screen.blit(bullet.surf,  bullet.rect)
 
         pygame.display.update()
+        return pygame.surfarray.array3d(self.screen)
 
     def seed(self, seed):
         self._seed = seed
