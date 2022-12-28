@@ -61,7 +61,8 @@ class WaveDefenseTabular(gym.Env):
             self.init_damage = time.time()
             self.max_damaging_time = .5
 
-            self.score = 0
+            self.turn = 0
+            self.max_turns = 15000
 
 
     def get_current_game_state(self):
@@ -103,7 +104,7 @@ class WaveDefenseTabular(gym.Env):
 
     def step(self, action):
         reward = 1
-        done = False
+        self.turn += 1
 
         # Handle the spawners
         current_spawn = time.time()
@@ -173,6 +174,10 @@ class WaveDefenseTabular(gym.Env):
         ### At this point all objects are drawn in the screen ###
         next_state = self.get_current_game_state()
 
+        if self.turn == self.max_turns:
+            print("GAME SOLVED! SURVIVED FOR: " + str(self.max_turns) + " STEPS!")
+            return next_state, 100, True, {} 
+
         # Count the damage received in the current frame
         current_damage = time.time()
         if current_damage - self.init_damage > self.max_damaging_time:
@@ -195,7 +200,7 @@ class WaveDefenseTabular(gym.Env):
         
         # Reset player health points and score
         self.player_hp = 10
-        self.score = 0
+        self.turn = 0
 
         # Reset spawn, damage and shooting timers
         self.init = time.time()

@@ -61,12 +61,13 @@ class WaveDefenseNoReward(gym.Env):
             self.init_damage = time.time()
             self.max_damaging_time = 1
 
-            self.score = 0
+            self.turn = 0
+            self.max_turns = 15000
 
 
     def step(self, action):
         reward = 0
-        done = False
+        self.turn += 1
 
         # Handle the spawners
         current_spawn = time.time()
@@ -129,6 +130,10 @@ class WaveDefenseNoReward(gym.Env):
         next_state = pygame.surfarray.array3d(self.screen)
         next_state = next_state.swapaxes(0,1)
 
+        if self.turn == self.max_turns:
+            print("GAME SOLVED! SURVIVED FOR: " + str(self.max_turns) + " STEPS!")
+            return next_state, 100, True, {} 
+
         # Count the damage received in the current frame
         current_damage = time.time()
         if current_damage - self.init_damage > self.max_damaging_time:
@@ -151,7 +156,7 @@ class WaveDefenseNoReward(gym.Env):
         
         # Reset player health points and score
         self.player_hp = 10
-        self.score = 0
+        self.turn = 0
 
         # Reset spawn, damage and shooting timers
         self.init = time.time()
