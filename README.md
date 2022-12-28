@@ -8,8 +8,11 @@ Random policy           |  Trained PPO
 :-------------------------:|:-------------------------:
 ![Alt text](screenshots/start_training.gif?raw=true)  |  ![Alt text](screenshots/end_training_ppo.gif?raw=true)
 
-
 The agent (cannon) shoots bullets (red squares) to enemies (blue squares) that move towards the agent.
+
+## Baselines
+
+To reproduce the baseline agents please see the baselines repository
 
 ## Installation
 
@@ -18,9 +21,9 @@ The agent (cannon) shoots bullets (red squares) to enemies (blue squares) that m
 conda create -n wave_defense python=3.6
 ```
 
-Install the package from pypi (https://pypi.org/project/WaveDefense/0.5/)
+Install the package from pypi (https://pypi.org/project/WaveDefense/1.9/)
 ```
-pip install WaveDefense==0.5
+pip install WaveDefense==1.9
 ```
 
 ## Environment versions
@@ -65,4 +68,12 @@ At each frame the agent choses wether to rotate left, rotate right, shoot, or do
 
 ## RL Training Results
 Watch this video to see preliminary results on the environment: https://www.youtube.com/watch?v=VOmj7_nnPJ0&t=1s&ab_channel=RogerCreusCastanyer
+
+## Headless mode   
+
+For running in machines with no display (e.g. compute cluster) use:
+
+```
+os.environ["SDL_VIDEODRIVER"] = "dummy"
+```
 
