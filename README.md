@@ -8,11 +8,21 @@ Random policy           |  Trained PPO
 :-------------------------:|:-------------------------:
 ![Alt text](screenshots/start_training.gif?raw=true)  |  ![Alt text](screenshots/end_training_ppo.gif?raw=true)
 
-The agent (cannon) shoots bullets (red squares) to enemies (blue squares) that move towards the agent.
+The agent (cannon) shoots bullets (red squares) to enemies (blue squares) that move towards the agent. The game is solved if the agent survives for 15k steps (a random agent survives for 500 steps on average).
 
 ## Baselines
 
 To reproduce the baseline agents please see the [baselines repository](https://github.com/roger-creus/Wave-Defense-Baselines)
+
+## RL Training Results
+Watch [this video](https://www.youtube.com/watch?v=VOmj7_nnPJ0&t=1s&ab_channel=RogerCreusCastanyer
+) to see some results on the environment.
+
+
+Episode returns          |  Episode Lengths
+:-------------------------:|:-------------------------:
+![Alt text](screenshots/returns.PNG?raw=true)  |  ![Alt text](screenshots/lengths.PNG?raw=true)
+
 
 ## Installation
 
@@ -65,9 +75,6 @@ The agent is rewarded depending on the number of enemies on screen (the lower th
 
 At each frame the agent choses wether to rotate left, rotate right, shoot, or do nothing. 
 
-
-## RL Training Results
-Watch this video to see preliminary results on the environment: https://www.youtube.com/watch?v=VOmj7_nnPJ0&t=1s&ab_channel=RogerCreusCastanyer
 
 ## Headless mode   
 
