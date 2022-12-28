@@ -4,9 +4,12 @@
 
 Wave defense is a gym-like RL environment inspired from wave defense games. 
 
-![Alt text](screenshots/start_training.gif?raw=true)
+Random policy           |  Trained PPO
+:-------------------------:|:-------------------------:
+![Alt text](screenshots/start_training.gif?raw=true)  |  ![Alt text](screenshots/end_training_ppo.gif?raw=true)
 
-The agent (cannon) shooting a bullet (red square) while an enemy (blue square) moves towards the agent.
+
+The agent (cannon) shoots bullets (red squares) to enemies (blue squares) that move towards the agent.
 
 ## Installation
 
