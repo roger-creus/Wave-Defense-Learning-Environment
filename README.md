@@ -12,7 +12,7 @@ The agent (cannon) shoots bullets (red squares) to enemies (blue squares) that m
 
 ## Baselines
 
-To reproduce the baseline agents please see the baselines repository
+To reproduce the baseline agents please see the [baselines repository](https://github.com/roger-creus/Wave-Defense-Baselines)
 
 ## Installation
 
