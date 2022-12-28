@@ -211,7 +211,7 @@ class WaveDefenseTabular(gym.Env):
 
         return np.array(state)
 
-    def render(self):
+    def render(self, mode):
         self.screen.fill((0,0,0))
         self.screen.blit(self.player.surf, self.player.rect)
 
