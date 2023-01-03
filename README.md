@@ -6,9 +6,9 @@ Wave defense is a gym-like RL environment inspired from wave defense games :ocea
 
 Please :star: star :star: the repository if you like it! 
 
-Random policy           |  Trained PPO
-:-------------------------:|:-------------------------:
-![Alt text](screenshots/start_training.gif?raw=true)  |  ![Alt text](screenshots/end_training_ppo.gif?raw=true)
+Random policy           |  Deep Q-Leanring (DQN) |   Proximal Policy Optimization (PPO)
+:-------------------------:|:-------------------------:|:-------------------------:
+![Alt text](screenshots/start_training.gif?raw=true)  |  ![Alt text](screenshots/end_training_dqn.gif?raw=true)| ![Alt text](screenshots/end_training_ppo.gif?raw=true)
 
 The agent (cannon) shoots bullets (red squares) to enemies (blue squares) that move towards the agent. The game is solved if the agent survives for 15k steps (a random agent survives for 500 steps on average).
 
@@ -20,8 +20,11 @@ To reproduce the baseline agents please see the [baselines repository](https://g
 Watch [this video](https://www.youtube.com/watch?v=VOmj7_nnPJ0&t=1s&ab_channel=RogerCreusCastanyer
 ) to see some results on the environment.
 
+Episode returns (DQN)         |  Episode Lengths (DQN)
+:-------------------------:|:-------------------------:
+![Alt text](screenshots/returns_dqn.png?raw=true)  |  ![Alt text](screenshots/lengths_dqn.png?raw=true)
 
-Episode returns          |  Episode Lengths
+Episode returns (PPO)         |  Episode Lengths (PPO)
 :-------------------------:|:-------------------------:
 ![Alt text](screenshots/returns.PNG?raw=true)  |  ![Alt text](screenshots/lengths.PNG?raw=true)
 
