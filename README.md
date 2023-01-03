@@ -6,7 +6,7 @@ Wave defense is a gym-like RL environment inspired from wave defense games :ocea
 
 Please :star: star :star: the repository if you like it! 
 
-Random policy           |  Deep Q-Leanring (DQN) |   Proximal Policy Optimization (PPO)
+Random policy           |  Deep Q-Learning (DQN) |   Proximal Policy Optimization (PPO)
 :-------------------------:|:-------------------------:|:-------------------------:
 ![Alt text](screenshots/start_training.gif?raw=true)  |  ![Alt text](screenshots/end_training_dqn.gif?raw=true)| ![Alt text](screenshots/end_training_ppo.gif?raw=true)
 
